@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1029717747936",
+    "project_id": "flutter-rent-finder",
+    "storage_bucket": "flutter-rent-finder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029717747936:android:a50c8249c7d7f3347d0885",
+        "android_client_info": {
+          "package_name": "com.rentfinder.rent_finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029717747936-tsf82vvsucj6kr6nihj56fq08ku7j16u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rentfinder.rent_finder",
+            "certificate_hash": "fd510b654bf32559043dde07f3aa31ebdcf84d76"
+          }
+        },
+        {
+          "client_id": "1029717747936-ihntopcvo1p45k40r8mti723megqc5a3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8iSRv8mjzT13CtYeCEd5rr2ZpuzgfRDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029717747936-ihntopcvo1p45k40r8mti723megqc5a3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
