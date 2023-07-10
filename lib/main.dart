@@ -42,6 +42,7 @@ class _MyAppState extends State<MyApp> {
       },
       theme: ThemeData(
         primaryColor: MyColors.primaryColor,
+        appBarTheme: AppBarTheme(elevation: 0),
         //fontFamily: "Roboto"
       ),
     );

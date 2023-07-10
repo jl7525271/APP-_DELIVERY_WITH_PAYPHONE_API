@@ -18,14 +18,13 @@ class _RestaurantCategoriesCreatePageState extends State<RestaurantCategoriesCre
 
   RestaurantCategoriesCreateController _con = new RestaurantCategoriesCreateController();
 
-  RestaurantProductsCreateController _conCategories = new RestaurantProductsCreateController();
+  //RestaurantProductsCreateController _conCategories = new RestaurantProductsCreateController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
-      _conCategories.init(context, refresh);
     });
   }
 
@@ -42,7 +41,7 @@ class _RestaurantCategoriesCreatePageState extends State<RestaurantCategoriesCre
           _textFielName(),
           _textFielDescription(),
           SizedBox(height: 30),
-          _dropDownCategories(_conCategories.categories!),
+          _dropDownCategories(_con.categories!),
         ],
       ),
 
@@ -169,11 +168,11 @@ class _RestaurantCategoriesCreatePageState extends State<RestaurantCategoriesCre
                     ),
                   ),
                   items: _dropDrownItems(categories),
-                  value: _conCategories.id_category,
+                  value: _con.id_category,
                   onChanged:(value){
                     setState(() {
                       print('Categoria seleccionada: $value');
-                      _conCategories.id_category = value!;
+                      _con.id_category = value!;
                     });
                   },
                 ),
@@ -198,10 +197,7 @@ class _RestaurantCategoriesCreatePageState extends State<RestaurantCategoriesCre
 
 
 
-  void refresh (){
-    setState(() {});
-}
-
-
+  void refresh(){
+    setState(() {});}
 
 }

@@ -20,7 +20,7 @@ class RestaurantCategory {
       description = description;
 
   factory RestaurantCategory.fromJson(Map<String, dynamic> json) => RestaurantCategory(
-    id: json["id"],
+      id: json["id"] is int ? json["id"].toString() : json["id"],
     name: json["name"],
     description: json["description"]
   );

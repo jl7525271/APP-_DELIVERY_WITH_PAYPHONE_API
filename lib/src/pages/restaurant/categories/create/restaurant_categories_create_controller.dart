@@ -12,21 +12,29 @@ class RestaurantCategoriesCreateController {
   late BuildContext context;
   late Function refresh;
   String? id_category ;
-  RestaurantProductsCreateController restaurantProductsCreateController = new RestaurantProductsCreateController();
 
   List<RestaurantCategory>? categories = [];
   TextEditingController nameController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
 
+
   CategoriesProvider _categoriesProvider = new CategoriesProvider();
   late User user;
   SharedPref sharedPref = new SharedPref();
 
-  Future <void> init (BuildContext context, Function refresh ) async {
+
+
+  Future <void> init (BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await sharedPref.read('user'));
+
     _categoriesProvider.init(context, user);
+    getCategories ();
+  }
+  void getCategories () async{
+    categories = await _categoriesProvider.getAll();
+    refresh();
   }
 
   void createCategory () async {
@@ -38,8 +46,6 @@ class RestaurantCategoriesCreateController {
       return;
     }
 
-
-
     RestaurantCategory _category = new RestaurantCategory(
         name: name,
         description: description
@@ -49,13 +55,14 @@ class RestaurantCategoriesCreateController {
 
     MySnackbar.show(context, responseApi!.message);
 
-    restaurantProductsCreateController.getCategories();
-
 
     if (responseApi!.success) {
       nameController.text = '';
       descriptionController.text= '';
+      getCategories ();
+      refresh();
     }
+
     print('Nombre de categoria: $name');
     print('Descripcion de categoria: $description');
   }

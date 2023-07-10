@@ -24,7 +24,7 @@ class CategoriesProvider {
     this.sessionUser = sessionUser;
   }
 
-  Future <List<RestaurantCategory>?> getAll() async  {
+  Future <List<RestaurantCategory>> getAll() async  {
     try{
       Uri url = Uri.http(_url,'$_api/getAll');
       Map <String, String> headers = {

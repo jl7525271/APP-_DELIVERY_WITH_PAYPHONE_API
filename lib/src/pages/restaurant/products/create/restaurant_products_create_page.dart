@@ -191,8 +191,8 @@ class _RestaurantProductsCreatePageState extends State<RestaurantProductsCreateP
     categories.forEach((category) {
       list.add(DropdownMenuItem(
           child: Text(category.name),
-          value: category.id
-        ,
+          value: category.id,
+
       ));
     });
     return list;
@@ -268,7 +268,7 @@ class _RestaurantProductsCreatePageState extends State<RestaurantProductsCreateP
     );
   }
 
-  void refresh (){
+  void refresh(){
     setState(() {});
   }
 

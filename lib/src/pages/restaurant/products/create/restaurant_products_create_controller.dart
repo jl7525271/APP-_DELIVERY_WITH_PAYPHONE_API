@@ -37,7 +37,7 @@ class RestaurantProductsCreateController {
 
   late ProgressDialog _progressDialog;
 
-  Future <void> init (BuildContext context, Function refresh ) async {
+  Future <void> init (BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await sharedPref.read('user'));
@@ -75,7 +75,6 @@ class RestaurantProductsCreateController {
     }
 
     Product product = new Product(
-
       name: name,
       description: description,
       price: double.parse(priceInString),
