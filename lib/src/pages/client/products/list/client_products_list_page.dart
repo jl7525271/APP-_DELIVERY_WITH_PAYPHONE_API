@@ -4,6 +4,7 @@ import 'package:rent_finder/src/models/category.dart';
 import 'package:rent_finder/src/models/product.dart';
 import 'package:rent_finder/src/pages/client/products/list/client_products_list_page_controller.dart';
 import 'package:rent_finder/src/utils/my_colors.dart';
+import 'package:rent_finder/src/widgets/no_data_widget.dart';
 
 class ClientProductsListPage extends StatefulWidget {
   const ClientProductsListPage({super.key});
@@ -66,16 +67,20 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
             return FutureBuilder( // Listar informacion de la lista de datos. Si son varios datos
               future: _con.getProducts(category.id), //
                 builder: (context, AsyncSnapshot<List<Product>> snapshot) {
-                  return GridView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.70),
-                      itemCount: snapshot.data?.length ?? 0,
-                      itemBuilder: (_,index) {
-                        return _cardProduct(snapshot.data![index]);
-                      }
-                  );
+                  if(snapshot.hasData) {
+                    if(snapshot.data!.length >0 ){
+                      return GridView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.70),
+                          itemCount: snapshot.data?.length ?? 0,
+                          itemBuilder: (_,index) {
+                            return _cardProduct(snapshot.data![index]);
+                          }
+                      );
+                    }else{return NoDataWidget('No hay productos');}
+                  }else{return NoDataWidget('No hay productos');}
                 },
             );
           }).toList(),
@@ -148,7 +153,7 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Text(
-                    '${product.price ?? 0 }\$',
+                    '\$ ${product.price ?? 0 }',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
