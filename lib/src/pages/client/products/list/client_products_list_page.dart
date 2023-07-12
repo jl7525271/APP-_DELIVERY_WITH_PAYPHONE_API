@@ -74,7 +74,7 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               childAspectRatio: 0.70),
-                          itemCount: snapshot.data?.length ?? 0,
+                          itemCount: snapshot.data!.length ?? 0,
                           itemBuilder: (_,index) {
                             return _cardProduct(snapshot.data![index]);
                           }
@@ -90,80 +90,85 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
   }
 
   Widget _cardProduct(Product product) {
-    return Container(
-      height:  240,
-      child: Card(
-        color: Colors.white,
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15)
-        ),
-        child:  Stack(
-          children: [
-            Positioned(
-              top: -1.0,
-              right: -1.0,
-              child: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: MyColors.primaryColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      topRight: Radius.circular(20)
-                     )
-                  ),
-                child: Icon(Icons.add, color: Colors.white),
+    return GestureDetector(
+      onTap: (){
+        _con.openBottomSheet(product);
+      },
+      child: Container(
+        height:  240,
+        child: Card(
+          color: Colors.white,
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
+          child:  Stack(
+            children: [
+              Positioned(
+                top: -1.0,
+                right: -1.0,
+                child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: MyColors.primaryColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        topRight: Radius.circular(20)
+                       )
+                    ),
+                  child: Icon(Icons.add, color: Colors.white),
+                ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 150,
-                  margin: EdgeInsets.only(top: 25),
-                  width: MediaQuery.of(context).size.width *0.45,
-                  padding: EdgeInsets.all(20),
-                  child: product.image1 != null
-                    ?  FadeInImage(
-                    image: NetworkImage(product.image1),
-                    fit: BoxFit.contain,
-                    fadeInDuration: Duration(milliseconds: 50),
-                    placeholder: AssetImage('assets/img/no-image.png'))
-                    : FadeInImage(
-                    image: AssetImage('assets/img/no-image.png'),
-                    fit: BoxFit.contain,
-                    fadeInDuration: Duration(milliseconds: 50),
-                    placeholder: AssetImage('assets/img/no-image.png'),)
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  height: 25,
-                  child: Text(
-                      product.name ?? '',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'NimbusSans'
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 150,
+                    margin: EdgeInsets.only(top: 25),
+                    width: MediaQuery.of(context).size.width *0.45,
+                    padding: EdgeInsets.all(20),
+                    child: product.image1 != null
+                      ?  FadeInImage(
+                      image: NetworkImage(product.image1),
+                      fit: BoxFit.contain,
+                      fadeInDuration: Duration(milliseconds: 50),
+                      placeholder: AssetImage('assets/img/no-image.png'))
+                      : FadeInImage(
+                      image: AssetImage('assets/img/no-image.png'),
+                      fit: BoxFit.contain,
+                      fadeInDuration: Duration(milliseconds: 50),
+                      placeholder: AssetImage('assets/img/no-image.png'),)
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    height: 25,
+                    child: Text(
+                        product.name ?? '',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'NimbusSans'
+                      ),
                     ),
                   ),
-                ),
-                Spacer(),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Text(
-                    '\$ ${product.price ?? 0 }',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'NimbusSans'
+                  Spacer(),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: Text(
+                      '\$ ${product.price ?? 0 }',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'NimbusSans'
+                      ),
                     ),
-                  ),
-                )
-              ],
-            )
-          ],
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -248,7 +253,7 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      '${_con.user?.name ?? ''} ${_con.user?.lastname ?? ''}',
+                      '${_con.user.name ?? ''} ${_con.user.lastname ?? ''}',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -259,7 +264,7 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
                   Container(
                     margin: EdgeInsets.only(top: 5),
                     child: Text(
-                      '${_con.user?.email ?? ''}',
+                      '${_con.user.email ?? ''}',
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.grey[200],
@@ -270,7 +275,7 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
                     ),
                   ),
                   Text(
-                    '${_con.user?.phone ?? ''}',
+                    '${_con.user.phone ?? ''}',
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey[200],
@@ -282,7 +287,7 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     height: 60,
-                    child: _con.user?.image != null
+                    child: _con.user.image != null
                         ? FadeInImage(
                           placeholder: AssetImage("assets/img/no-image.png"),
                           image: NetworkImage(_con.user.image.toString()), //NetworkImage(img),

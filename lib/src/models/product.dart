@@ -17,25 +17,24 @@ class Product {
   List<Product>toList = [];
 
   Product({
-    id = '',
-    name= '',
-    description ='',
-    image1= '',
-    image2 = '',
-    image3 ='',
-    price = 0.00,
-    id_category,
-    quantity,
-  }):
-        id =  id,
-        name=  name,
+    String id = '',
+    String name = '',
+    String description = '',
+    String image1 = '',
+    String image2 = '',
+    String image3 = '',
+    double price = 0.00,
+    int id_category = 0,
+    int? quantity,
+  })  : id = id,
+        name = name,
         description = description,
-        image1= image1,
-        image2 =  image2,
+        image1 = image1,
+        image2 = image2,
         image3 = image3,
         price = price,
-        id_category= id_category,
-        quantity= quantity;
+        id_category = id_category,
+        quantity = quantity;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
     id: json["id"] is int ? json["id"].toString() : json["id"],
@@ -49,7 +48,7 @@ class Product {
     quantity: json["quantity"],
   );
 
-  Product.fromJsonList(List<dynamic> jsonList) {
+  Product.fromJsonList(List<dynamic>? jsonList) {
     if (jsonList == null ) return;
     jsonList.forEach((item) {
       Product product = Product.fromJson(item);

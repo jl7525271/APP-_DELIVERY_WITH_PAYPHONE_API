@@ -9,9 +9,10 @@ class SharedPref{
      final jsonString = json.encode(value);
      await prefs.setString(key, jsonString);
    }
-   Future <dynamic> read (String key) async {
+   Future <dynamic> read (String? key) async {
      final prefs = await SharedPreferences.getInstance();
-     final jsonString = prefs.getString(key);
+     final jsonString = prefs.getString(key!);
+     print('preference: ${jsonString}');
      if (jsonString == null) return null;
      return json.decode(jsonString);
    }
