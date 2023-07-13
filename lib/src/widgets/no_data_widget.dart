@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NoDataWidget extends StatelessWidget {
-  late String text;
-   NoDataWidget(this.text,{super.key});
+
+  late String text ='';
+  NoDataWidget({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class NoDataWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/img/no_items.png'),
-          Text('No hay product')
+          Text('No hay producto')
         ],
       ),
     );

@@ -81,8 +81,8 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
                             return _cardProduct(snapshot.data![index]);
                           }
                       );
-                    }else{return NoDataWidget('No hay productos');}
-                  }else{return NoDataWidget('No hay productos');}
+                    }else{return NoDataWidget(text: 'No hay productos');}
+                  }else{return NoDataWidget(text: 'No hay productos');}
                 },
             );
           }).toList(),
@@ -177,28 +177,31 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
   }
 
   Widget _shoppingBag (){
-    return Stack(
-      children: [
-        Container(
-          margin: EdgeInsets.only(right: 15, top: 13),
-          child: Icon(
-            Icons.shopping_bag_outlined,
-            color:  Colors.black,
+    return GestureDetector(
+      onTap: _con.goToOrdersCreatePage,
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(right: 15, top: 13),
+            child: Icon(
+              Icons.shopping_bag_outlined,
+              color:  Colors.black,
+            ),
           ),
-        ),
-        Positioned(
-          right: 14,
-            top: 15,
-            child: Container(
-              width: 9,
-              height: 9,
-              decoration: BoxDecoration(
-                color: Colors.green, 
-                borderRadius: BorderRadius.all(Radius.circular(30))
-              ),
-          )
-        ),
-      ],
+          Positioned(
+            right: 14,
+              top: 15,
+              child: Container(
+                width: 9,
+                height: 9,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(Radius.circular(30))
+                ),
+            )
+          ),
+        ],
+      ),
     );
   }
   

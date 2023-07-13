@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rent_finder/src/pages/client/orders/create/client_orders_create_page.dart';
 import 'package:rent_finder/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:rent_finder/src/pages/client/update/client_update_page.dart';
 import 'package:rent_finder/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> {
         'delivery/orders/list': (BuildContext contex) => DeliveryOrdersListPage(),
         'restaurant/categories/create': (BuildContext contex) => RestaurantCategoriesCreatePage(),
         'restaurant/products/create': (BuildContext contex) => RestaurantProductsCreatePage(),
+        'client/orders/create': (BuildContext contex) => ClienteOrdersCreatePage(),
 
       },
       theme: ThemeData(

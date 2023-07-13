@@ -188,7 +188,7 @@ class _ClientProductsDetailPageState extends State<ClientProductsDetailPage> {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 25),
+          //margin: EdgeInsets.only(top: 25),
           child: ImageSlideshow(
             width: double.infinity,
             height: MediaQuery.of(context).size.height *0.4,
@@ -204,14 +204,14 @@ class _ClientProductsDetailPageState extends State<ClientProductsDetailPage> {
                   placeholder: AssetImage('assets/img/no-image.png'))
                   : FadeInImage(
                   image: AssetImage('assets/img/no-image.png'),
-                  fit: BoxFit.contain,
+                  fit: BoxFit.contain  ,
                   fadeInDuration: Duration(milliseconds: 50),
                   placeholder: AssetImage('assets/img/no-image.png'))),
 
               (_con.product?.image2 != null
                   ?  FadeInImage(
                   image: NetworkImage(_con.product!.image2),
-                  fit: BoxFit.contain,
+                  fit: BoxFit.contain ,
                   fadeInDuration: Duration(milliseconds: 50),
                   placeholder: AssetImage('assets/img/no-image.png'))
                   : FadeInImage(
@@ -223,7 +223,7 @@ class _ClientProductsDetailPageState extends State<ClientProductsDetailPage> {
               (_con.product?.image3 != null
                   ?  Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50)
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: FadeInImage(
                     image: NetworkImage(_con.product!.image3),
@@ -256,7 +256,7 @@ class _ClientProductsDetailPageState extends State<ClientProductsDetailPage> {
           left: 5,
           top: 11,
             child: IconButton(
-              onPressed: () {},
+              onPressed: _con.close,
               icon: Icon(Icons.arrow_back_ios),
               color: MyColors.primaryColor,
             )

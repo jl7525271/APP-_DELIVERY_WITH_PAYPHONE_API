@@ -69,4 +69,8 @@ class ClientProductsListController{
 
   }
 
+  void goToOrdersCreatePage () {
+    Navigator.pushNamed(context, 'client/orders/create');
+  }
+
 }
