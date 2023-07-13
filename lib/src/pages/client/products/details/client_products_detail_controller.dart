@@ -33,23 +33,6 @@ class ClientProductsDetailController {
     refresh();
   }
 
-  void addToBag() {
-    int index = selectProducts!.indexWhere((p) => p.id == product!.id);
-
-    print('index: $index');
-    if ( index == -1 ) { //DENTRO DE LA LISTA DE PRODUCTOS SELECCIONADOS AUN NO EXISTE ESE PRODUCTO
-      if( product!.quantity == null) {
-        product!.quantity = 1;
-      }
-      selectProducts!.add(product!);
-    } else {
-      selectProducts![index].quantity = counter;
-    }
-
-    _sharedPref.save('order', selectProducts);
-    Fluttertoast.showToast(msg: 'Producto agregado al carrito');
-  }
-
   void addItem () {
     counter = counter + 1;
     productPrice = product!.price * counter;
@@ -57,6 +40,29 @@ class ClientProductsDetailController {
 
     refresh ();
   }
+
+
+  void addToBag() {
+    int index = selectProducts!.indexWhere((p) => p.id == product!.id);
+    print('Index: $index');
+     if (index == -1 ) { // aun no hay ese producto dentro de la lista
+       if(product!.quantity  == null || product!.quantity  == 0 ) {
+          product!.quantity = 1;
+       }
+       selectProducts?.add(product!);
+     } else {
+       selectProducts?.forEach((p) {
+         print('Producto del else seleccionado: ${p.toJson()}');
+       });
+       selectProducts![index].quantity = selectProducts![index].quantity! + counter;
+       print(counter);
+     }
+
+    _sharedPref.save('order', selectProducts);
+    Fluttertoast.showToast(msg: 'Producto agregado al carrito');
+  }
+
+
 
   void removeItem () {
     if (counter > 1 ) {

@@ -15,10 +15,9 @@ class ClientProductsListController{
   late Function refresh;
   List<RestaurantCategory> categories = [];
   CategoriesProvider _categoriesProvider = new CategoriesProvider();
-
   ProductsProvider _productsProvider = new ProductsProvider();
-
   GlobalKey<ScaffoldState> key = new GlobalKey <ScaffoldState>();
+
 
   Future <void> init(BuildContext context, Function refresh) async {
     this.context = context;
@@ -36,7 +35,14 @@ class ClientProductsListController{
 
  void getCategories () async {
     categories = await _categoriesProvider.getAll();
+    print('categories: ${categories.length}');
     refresh();
+
+    categories.forEach((category) {
+      print('Category_id: ${category.id}');
+      print('Category_name: ${category.name}');
+      print('Category_description: ${category.description}');
+    });
  }
 
  void openBottomSheet (Product product) {

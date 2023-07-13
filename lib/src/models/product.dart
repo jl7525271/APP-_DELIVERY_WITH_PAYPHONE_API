@@ -45,7 +45,7 @@ class Product {
     image3: json["image3"],
     price: json["price"] is String ? double.parse(json["price"]): isInteger(json["price"]) ? json["price"].toDouble() : json["price"],
     id_category: json["id_category"] is String ? int.parse(json["id_category"]) : json["id_category"],
-    quantity: json["quantity"],
+    quantity: json["quantity"] is String ? int.parse(json["quantity"]) : json["quantity"],
   );
 
   Product.fromJsonList(List<dynamic>? jsonList) {

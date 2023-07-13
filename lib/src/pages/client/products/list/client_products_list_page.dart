@@ -61,7 +61,9 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
             ),
           ),
         ),
+
         drawer: _drawer(),
+
         body: TabBarView(
           children:_con.categories.map((RestaurantCategory category) {
             return FutureBuilder( // Listar informacion de la lista de datos. Si son varios datos
