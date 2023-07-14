@@ -13,7 +13,7 @@ class NoDataWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/img/no_items.png'),
-          Text('No hay producto')
+          Text(text)
         ],
       ),
     );

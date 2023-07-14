@@ -39,6 +39,11 @@ dependencies:
   easy_mask: ^2.0.1
   modal_bottom_sheet: ^3.0.0-pre
   flutter_image_slideshow: ^0.1.6
+  google_maps_flutter: ^2.3.1
+  geolocator: ^9.0.2
+  location: ^5.0.0
+  geocoding: ^2.1.0
+
 
 
 

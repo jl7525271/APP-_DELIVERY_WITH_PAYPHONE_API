@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rent_finder/src/pages/client/address/create/client_address_create_page.dart';
+import 'package:rent_finder/src/pages/client/address/list/client_address_list_page.dart';
+import 'package:rent_finder/src/pages/client/address/map/client_address_map_page.dart';
 import 'package:rent_finder/src/pages/client/orders/create/client_orders_create_page.dart';
 import 'package:rent_finder/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:rent_finder/src/pages/client/update/client_update_page.dart';
@@ -40,6 +43,9 @@ class _MyAppState extends State<MyApp> {
         'restaurant/categories/create': (BuildContext contex) => RestaurantCategoriesCreatePage(),
         'restaurant/products/create': (BuildContext contex) => RestaurantProductsCreatePage(),
         'client/orders/create': (BuildContext contex) => ClienteOrdersCreatePage(),
+        'client/address/list': (BuildContext contex) => ClientAddressListPage(),
+        'client/address/create': (BuildContext contex) => ClientAddressCreatePage(),
+        'client/address/map': (BuildContext contex) => ClientAddressMapPage()
 
       },
       theme: ThemeData(

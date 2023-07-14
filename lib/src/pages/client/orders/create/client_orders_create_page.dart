@@ -51,7 +51,9 @@ class _ClienteOrdersCreatePageState extends State<ClienteOrdersCreatePage> {
               children:_con.selectProducts!.map((Product product) {
                 return _carProduct(product);
               }).toList())
-          : NoDataWidget(text:'Ningun producto agregado'),
+          : Container(
+          alignment: Alignment.center,
+            child: NoDataWidget(text:'Ningun producto agregado')),
     );
   }
 
@@ -209,7 +211,7 @@ class _ClienteOrdersCreatePageState extends State<ClienteOrdersCreatePage> {
     return Container(
       margin: EdgeInsets.only(left: 40, right: 40,  top: 40, bottom: 35),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: _con.goToAddress,
         style: ElevatedButton.styleFrom(
             primary: MyColors.primaryColor,
             padding: EdgeInsets.symmetric(vertical: 2),
