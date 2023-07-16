@@ -20,14 +20,14 @@ class ClientAddressCreateController {
   Map <String, dynamic> refPoint = {};
 
   User user = new User();
-  SharedPref _sharedPreferences = new SharedPref();
+  SharedPref _sharedPref = new SharedPref();
 
   AddressProvider _addressProvider = new AddressProvider();
 
   Future <void> init (BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
-    user = User.fromJson( await _sharedPreferences.read('user'));
+    user = User.fromJson( await _sharedPref.read('user'));
 
     _addressProvider.init(context, user);
 
@@ -55,11 +55,13 @@ class ClientAddressCreateController {
     ResponseApi?  responseApi =  await _addressProvider.create(address);
 
     if(responseApi!.success) {
+      address.id = responseApi.data;
+      _sharedPref.save('address', address);
+
       Fluttertoast.showToast(msg: responseApi.message);
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
   }
-
 
   void openMap()  async {
     refPoint= await showMaterialModalBottomSheet( //PARA MOSTRAR LA DESCRIPCION DE UN PRODUCTO
@@ -74,9 +76,4 @@ class ClientAddressCreateController {
       refresh();
     }
   }
-
-
-
-
-
 }

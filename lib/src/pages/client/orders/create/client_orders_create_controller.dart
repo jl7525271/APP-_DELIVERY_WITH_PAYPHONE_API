@@ -22,7 +22,7 @@ class ClientOrdersCreateController {
     this.context = context;
     this.refresh = refresh;
 
-    selectProducts = Product.fromJsonList(await _sharedPref.read('order')).toList;
+    selectProducts = Product.fromJsonList(await _sharedPref.read('order')).toList; // obtiene los productos guardados en cache
     getTotal ();
 
     refresh();

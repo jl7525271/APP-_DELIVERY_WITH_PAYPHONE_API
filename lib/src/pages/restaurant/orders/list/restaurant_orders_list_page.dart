@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:rent_finder/src/models/order.dart';
 import 'package:rent_finder/src/pages/restaurant/orders/list/restaurant_orders_list_controller.dart';
 import 'package:rent_finder/src/utils/my_colors.dart';
+
+import '../../../../widgets/no_data_widget.dart';
 
 class RestaurantOrdersListPage extends StatefulWidget {
   const RestaurantOrdersListPage({super.key});
@@ -23,21 +26,146 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
   }
 
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: _con.key,
-      appBar: AppBar(
-        backgroundColor: MyColors.primaryColor,
-        leading: _menuDrawer(),
-      ),
-      drawer: _drawer(),
-      body: Center(
-        child: Text('Restaurante Orders List'),
+ @override
+ Widget build(BuildContext context) {
+   return DefaultTabController(
+     length: _con.status.length,
+     child: Scaffold(
+         key: _con.key,
+         appBar: PreferredSize(
+           preferredSize: Size.fromHeight(100),
+           child: AppBar(
+             automaticallyImplyLeading: false,
+             backgroundColor: Colors.white,
+
+             flexibleSpace: Column(
+               children: [
+                 SizedBox(height: 80),
+                 _menuDrawer(),
+
+               ],
+             ),
+             bottom: TabBar(
+                 indicatorColor: MyColors.primaryColor,
+                 labelColor: Colors.black,
+                 unselectedLabelColor: Colors.grey[400],
+                 isScrollable: true,
+                 tabs: List<Widget>.generate(_con.status.length, (index) {
+                   return Tab(
+                     child: Text(_con.status[index] ?? ''),
+                   );
+                 })
+             ),
+           ),
+         ),
+
+         drawer: _drawer(),
+
+         body: TabBarView(
+           children:_con.status.map((String status) {
+             return FutureBuilder( // Listar informacion de la lista de datos. Si son varios datos
+               future: _con.getOrders(status),
+               builder: (context, AsyncSnapshot<List<Order>> snapshot) {
+                 if(snapshot.hasData) {
+                   if(snapshot.data!.length >0 ){
+                     return ListView.builder(
+                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                         itemCount: snapshot.data!.length ?? 0,
+                         itemBuilder: (_,index) {
+                           return _cardOrder(snapshot.data![index]);
+                         }
+                     );
+                   }else{return NoDataWidget(text: 'No hay ordenes');}
+                 }else{return NoDataWidget(text: 'No hay ordenes');}
+               },
+             );
+           }).toList(),
+         )
+     ),
+   );
+ }
+
+  Widget _cardOrder (Order order) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      height: 160,
+      child: Card(
+        elevation: 3.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15)
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+                child: Container(
+                  height: 30,
+                  width: MediaQuery.of(context).size.width *1,
+                  decoration: BoxDecoration(
+                    color: MyColors.primaryColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    )
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Orden #0',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontFamily: 'NimbusSans'
+                      ),
+                    ),
+                  ),
+                )
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    width: double.infinity,
+                    child: Text(
+                      'Pedido: 2023/12/31',
+                      style: TextStyle(
+                          fontSize: 13
+                      ),maxLines: 1,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    width: double.infinity,
+                    child: Text(
+                      'Cliente: Roger',
+                      style: TextStyle(
+                          fontSize: 13
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    width: double.infinity,
+                    child: Text(
+                      'Entregar en: Camino viejo ',
+                      style: TextStyle(
+                          fontSize: 13
+                      ),maxLines: 2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-
 
   Widget _menuDrawer (){
     return GestureDetector(
