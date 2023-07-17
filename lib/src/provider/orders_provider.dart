@@ -13,7 +13,7 @@ class OrdersProvider {
   String _url = Environment.API_DEILVERY;
   String _api = '/api/orders';
 
-  late BuildContext? context;
+  late BuildContext context;
   User? sessionUser;
 
   Future <void> init (BuildContext context,User sessionUser) async {
@@ -32,7 +32,7 @@ class OrdersProvider {
       final res = await http.post(url, headers: headers, body: bodyParams);
       if(res.statusCode == 401 ) {
         Fluttertoast.showToast(msg: 'Session expirada');
-        new SharedPref().logout(context!, sessionUser!.id);
+        new SharedPref().logout(context, sessionUser!.id);
       }
 
       final data = json.decode(res.body);
@@ -46,7 +46,6 @@ class OrdersProvider {
 
   Future <List<Order>> getByStatus(String status) async  {
     try{
-      print('Session Token: ${sessionUser!.seccion_token}');
       Uri url = Uri.http(_url,'$_api/findByStatus/${status}');
       Map <String, String> headers = {
         'Content-type':'application/json',
@@ -55,11 +54,13 @@ class OrdersProvider {
       final res = await http.get(url, headers: headers);
       if(res.statusCode == 401 ) {
         Fluttertoast.showToast(msg: 'Session expirada');
-        new SharedPref().logout(context!, sessionUser!.id);
+        new SharedPref().logout(context, sessionUser!.id);
       }
       final data = json.decode(res.body);
       Order order  = Order.fromJsonList(data);
+      //print('tolist: ${order.toList}');
       return order.toList;
+
 
     }catch (e){
       print('Error: $e');

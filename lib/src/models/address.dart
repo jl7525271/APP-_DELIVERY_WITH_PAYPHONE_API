@@ -6,7 +6,7 @@ String addressToJson(Address data) => json.encode(data.toJson());
 
 class Address {
  late String id;
- late String idUser;
+ late String? idUser;
  late String address;
  late String neighborhood;
  late double lat;

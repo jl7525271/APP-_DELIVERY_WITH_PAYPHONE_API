@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:rent_finder/src/models/order.dart';
 import 'package:rent_finder/src/pages/restaurant/orders/list/restaurant_orders_list_controller.dart';
 import 'package:rent_finder/src/utils/my_colors.dart';
-
 import '../../../../widgets/no_data_widget.dart';
 
 class RestaurantOrdersListPage extends StatefulWidget {
@@ -14,7 +13,6 @@ class RestaurantOrdersListPage extends StatefulWidget {
 }
 
 class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
-
  RestaurantOrdersListController _con = RestaurantOrdersListController();
  @override
   void initState() {
@@ -67,7 +65,7 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
                future: _con.getOrders(status),
                builder: (context, AsyncSnapshot<List<Order>> snapshot) {
                  if(snapshot.hasData) {
-                   if(snapshot.data!.length >0 ){
+                   if(snapshot.data!.length > 0 ){
                      return ListView.builder(
                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                          itemCount: snapshot.data!.length ?? 0,
@@ -88,7 +86,7 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
   Widget _cardOrder (Order order) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      height: 160,
+      height: 140,
       child: Card(
         elevation: 3.0,
         shape: RoundedRectangleBorder(
@@ -111,7 +109,7 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
                     width: double.infinity,
                     alignment: Alignment.center,
                     child: Text(
-                      'Orden #0',
+                      'Orden \# ${order.id}',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -122,7 +120,7 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
                 )
             ),
             Container(
-              margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+              margin: EdgeInsets.only(top: 40, left: 20, right: 20),
               child: Column(
                 children: [
                   Container(
@@ -130,7 +128,18 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     width: double.infinity,
                     child: Text(
-                      'Pedido: 2023/12/31',
+                      'Pedido: ${DateTime(order.timestamp).toString()} ',
+                      style: TextStyle(
+                          fontSize: 13
+                      ),maxLines: 2,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    width: double.infinity,
+                    child: Text(
+                      'Cliente: ${order.client?.name ?? ''} ${order.client?.lastname ?? ''}' ,
                       style: TextStyle(
                           fontSize: 13
                       ),maxLines: 1,
@@ -141,23 +150,14 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     width: double.infinity,
                     child: Text(
-                      'Cliente: Roger',
+                      'Entregar en: ${order.address?.address ?? ''}',
                       style: TextStyle(
                           fontSize: 13
                       ),
+                      maxLines: 2,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text(
-                      'Entregar en: Camino viejo ',
-                      style: TextStyle(
-                          fontSize: 13
-                      ),maxLines: 2,
-                    ),
-                  ),
+
                 ],
               ),
             ),

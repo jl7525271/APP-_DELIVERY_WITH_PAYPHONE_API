@@ -42,7 +42,7 @@ class ClientUpdateController{
 
     nameController.text = user!.name;
     lastnameController.text = user!.lastname;
-    phoneController.text = user!.phone;
+    phoneController.text = user!.phone!;
 
     refresh();
   }

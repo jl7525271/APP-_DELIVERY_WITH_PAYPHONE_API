@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:rent_finder/src/models/address.dart';
 import 'package:rent_finder/src/models/product.dart';
+import 'package:rent_finder/src/models/user.dart';
 
 Order orderFromJson(String str) => Order.fromJson(json.decode(str));
 
@@ -12,13 +14,23 @@ class Order {
   late String? idDelivery;
   late String idAddress;
   late String status;
-  late double lat;
-  late double lng;
+  late double? lat;
+  late double? lng;
   late int timestamp;
-  List<Product>? products = [];
+  List<Product> products = [];
   List<Order> toList = [];
+  User? client = new User(
+    email: '',
+    phone: '',
+    password: '',
+    seccion_token: '',
+  );
+  Address? address = new Address(
+    idUser: '',
+  );
 
   Order({
+
     id ='',
     idClient = '',
     idDelivery,
@@ -27,7 +39,9 @@ class Order {
     lat = 9.998,
     lng = 4.99,
     timestamp = 0,
-    List<Product>? products,
+    List<Product> products = const [],
+    User? client,
+    Address? address,
   }):
         id = id,
         idClient = idClient,
@@ -37,7 +51,10 @@ class Order {
         lat = lat,
         lng = lng ,
         timestamp = timestamp,
-        products = products;
+        products = products,
+        client= client,
+        address= address;
+
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"] is int ? json["id"].toString() : json["id"],
@@ -49,6 +66,8 @@ class Order {
     lng: json["lng"]  is String ? double.parse(json["lng"]): json["lng"],
     timestamp: json["timestamp"] is String ? int.parse(json["timestamp"]) : json["timestamp"],
     products:json["products"] != null ? List<Product>.from(json["products"].map((model) => Product.fromJson(model))) ?? [] : [],
+    client: json["client"] is String ? userFromJson(json["client"]) : User.fromJson(json["client"] ?? {}),
+    address: json["address"] is String ? addressFromJson(json["address"]) : Address.fromJson(json["address"] ?? {}),
   );
 
   Order.fromJsonList(List<dynamic> jsonList) {
@@ -56,7 +75,6 @@ class Order {
     jsonList.forEach((item) {
       Order order = Order.fromJson(item);
       toList.add(order);
-      print('respuesta del servidor: ${order}');
     });
   }
 
@@ -70,5 +88,7 @@ class Order {
     "lng": lng,
     "timestamp": timestamp,
     "products" : products,
+    "client": client,
+    "address": address,
   };
 }

@@ -9,7 +9,7 @@ class RestaurantOrdersListController{
   SharedPref _sharedPref = new SharedPref();
   User user = new User();
   late Function refresh;
-  List<String> status = ['PAGADO', 'DESPACHADO', 'ENCAMINO', 'ENTREGADO'];
+  List<String> status = ['PAGADO', 'DESPACHADO', 'EN CAMINO', 'ENTREGADO'];
   OrdersProvider _ordersProvider = new OrdersProvider();
   GlobalKey<ScaffoldState> key = new GlobalKey <ScaffoldState>();
 
@@ -22,7 +22,7 @@ class RestaurantOrdersListController{
     refresh();
   }
 
-  Future<List<Order>> getOrders (String status) async {
+  Future <List<Order>> getOrders (String status) async {
     return await _ordersProvider.getByStatus(status);
   }
 
