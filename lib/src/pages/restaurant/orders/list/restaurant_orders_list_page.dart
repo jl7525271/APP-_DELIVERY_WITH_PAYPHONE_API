@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:rent_finder/src/models/order.dart';
 import 'package:rent_finder/src/pages/restaurant/orders/list/restaurant_orders_list_controller.dart';
 import 'package:rent_finder/src/utils/my_colors.dart';
+import 'package:rent_finder/src/utils/relative_time_util.dart';
 import '../../../../widgets/no_data_widget.dart';
 
 class RestaurantOrdersListPage extends StatefulWidget {
@@ -84,84 +85,90 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
  }
 
   Widget _cardOrder (Order order) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      height: 140,
-      child: Card(
-        elevation: 3.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15)
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-                child: Container(
-                  height: 30,
-                  width: MediaQuery.of(context).size.width *1,
-                  decoration: BoxDecoration(
-                    color: MyColors.primaryColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                    )
-                  ),
+    return GestureDetector(
+      onTap: () {
+        _con.openBottomSheet(order);
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        height: 140,
+        child: Card(
+          elevation: 3.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
+          child: Stack(
+            children: [
+              Positioned(
                   child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Orden \# ${order.id}',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontFamily: 'NimbusSans'
+                    height: 30,
+                    width: MediaQuery.of(context).size.width *1,
+                    decoration: BoxDecoration(
+                      color: MyColors.primaryColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                      )
+                    ),
+                    child: Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Orden \# ${order.id}',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                          fontFamily: 'NimbusSans'
+                        ),
                       ),
                     ),
-                  ),
-                )
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 40, left: 20, right: 20),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text(
-                      'Pedido: ${DateTime(order.timestamp).toString()} ',
-                      style: TextStyle(
-                          fontSize: 13
-                      ),maxLines: 2,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text(
-                      'Cliente: ${order.client?.name ?? ''} ${order.client?.lastname ?? ''}' ,
-                      style: TextStyle(
-                          fontSize: 13
-                      ),maxLines: 1,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text(
-                      'Entregar en: ${order.address?.address ?? ''}',
-                      style: TextStyle(
-                          fontSize: 13
-                      ),
-                      maxLines: 2,
-                    ),
-                  ),
-
-                ],
+                  )
               ),
-            ),
-          ],
+              Container(
+                margin: EdgeInsets.only(top: 40, left: 20, right: 20),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      width: double.infinity,
+                      child: Text(
+
+                        'Pedido: ${RelativeTimeUtil.getRelativeTime(order.timestamp ?? 0)} ',
+                        style: TextStyle(
+                            fontSize: 13
+                        ),maxLines: 2,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      width: double.infinity,
+                      child: Text(
+                        'Cliente: ${order.client?.name ?? ''} ${order.client?.lastname ?? ''}' ,
+                        style: TextStyle(
+                            fontSize: 13
+                        ),maxLines: 1,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      width: double.infinity,
+                      child: Text(
+                        'Entregar en: ${order.address?.address ?? ''}',
+                        style: TextStyle(
+                            fontSize: 13
+                        ),
+                        maxLines: 2,
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -19,6 +19,7 @@ class UsersProvider {
 
   BuildContext? context;
   late User? sesionUser;
+
   Future <void> init(BuildContext context, {User? sesionUser})  async {
     this.context= context;
     this.sesionUser = sesionUser;
@@ -46,6 +47,31 @@ class UsersProvider {
       return null;
     }
   }
+
+  Future <List<User>?> getDeliveryMen() async {
+    try{
+      Uri url = Uri.http(_url,'$_api/findDeliveryMen');
+      Map <String, String> headers = {
+        'Content-type':'application/json',
+        'Authorization': sesionUser!.seccion_token
+      };
+      final res = await http.get(url, headers: headers);
+
+      if(res.statusCode == 401 ) { // NO AUTORIZADO
+        Fluttertoast.showToast(msg: 'Tu sesion expiro');
+        new SharedPref().logout(context!, sesionUser!.id);
+      }
+      final data = json.decode(res.body);
+      User user = User.fromJsonList(data);
+      print('tolist: ${user.toList}');
+      return user.toList;
+
+    }catch(e){
+      print('Error $e');
+      return null;
+    }
+  }
+
 
   Future <ResponseApi?> create(User user) async{
     try {
