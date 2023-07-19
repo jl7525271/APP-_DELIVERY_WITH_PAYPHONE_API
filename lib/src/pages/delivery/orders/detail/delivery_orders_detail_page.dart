@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:rent_finder/src/models/order.dart';
 import 'package:rent_finder/src/models/product.dart';
-import 'package:rent_finder/src/models/user.dart';
-import 'package:rent_finder/src/pages/restaurant/orders/detail/restaurant_orders_detail_controller.dart';
+import 'package:rent_finder/src/pages/delivery/orders/detail/delivery_orders_detail_controller.dart';
 import 'package:rent_finder/src/utils/my_colors.dart';
 import 'package:rent_finder/src/utils/relative_time_util.dart';
 import 'package:rent_finder/src/widgets/no_data_widget.dart';
 
-class RestaurantOrdersDetailPage extends StatefulWidget {
+class DeliveryOrdersDetailPage extends StatefulWidget {
 
   Order order = new Order();
-   RestaurantOrdersDetailPage({Key? key, required this.order}) : super(key: key);
+  DeliveryOrdersDetailPage({Key? key, required this.order}) : super(key: key);
 
   @override
-  State<RestaurantOrdersDetailPage> createState() => _RestaurantOrdersDetailPageState();
+  State<DeliveryOrdersDetailPage> createState() => _DeliveryOrdersDetailPageState();
 }
 
-class _RestaurantOrdersDetailPageState extends State<RestaurantOrdersDetailPage> {
+class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
 
-  RestaurantOrdersDetailController _con = new RestaurantOrdersDetailController();
+  DeliveryOrdersDetailController _con = new DeliveryOrdersDetailController();
   
   @override
   void initState() {
@@ -34,11 +33,11 @@ class _RestaurantOrdersDetailPageState extends State<RestaurantOrdersDetailPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orden \# ${_con.order.id ?? ''}'),
+        title: Text('Orden \# ${_con.order?.id ?? ''}'),
         backgroundColor: MyColors.primaryColor,
       ),
       bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height * 0.44,
+        height: MediaQuery.of(context).size.height * 0.37,
         child:SingleChildScrollView(
           child: Column(
             children: [
@@ -47,45 +46,26 @@ class _RestaurantOrdersDetailPageState extends State<RestaurantOrdersDetailPage>
                 endIndent: 30, // Para establecer margen en la parte derecha
                 indent: 30, // para la parte izquierda
               ),
-              _textDescription (),
               SizedBox(height: 10,),
-              _con.order.status != 'PAGADO' ? deliveryData () : Container(),
-              _con.order.status == 'PAGADO' ? _dropDown(_con.users!) : Container(), // Obtenie la lista de usuarios // hace la peticion al servidor
-              SizedBox(height: 20,),
-              _textDataClient('Cliente: ','${_con.order.client?.name ?? ''} ${_con.order.client?.lastname ?? ''}' ),
-              _textData ('Entregar en: ','${_con.order.address?.address ?? ''}'),
+              _textDataClient('Cliente: ','${_con.order.client!.name ?? ''} ${_con.order.client!.lastname ?? ''}' ),
+              _textData ('Entregar en: ','${_con.order.address!.address ?? ''}'),
               _textDataClient (
                   'Fecha de pedido: ','${RelativeTimeUtil.getRelativeTime(_con.order.timestamp ?? 0)}' ),
               SizedBox(height: 20,),
               _textTotalPrice(),
-              _con.order.status == 'PAGADO' ? _buttonNext () : Container(),
+              _buttonNext ()
             ],
           ),
         ),
       ),
-      body: _con.order.products.length > 0
+      body: _con.order!.products.length > 0
           ?  ListView(
-              children:_con.order.products.map((Product product) {
+              children:_con.order!.products.map((Product product) {
                 return _carProduct(product);
               }).toList())
           : Container(
           alignment: Alignment.center,
             child: NoDataWidget(text:'Ningun producto agregado')),
-    );
-  }
-
-  Widget _textDescription (){
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.symmetric(horizontal: 30),
-      child: Text(
-       _con.order == 'PAGADO' ?  'Asignar repartidor' : 'Repartido Asignado',
-        style: TextStyle(
-          fontSize: 16,
-          fontStyle: FontStyle.italic,
-          color: MyColors.primaryColor
-        ),
-      ),
     );
   }
 
@@ -240,7 +220,7 @@ class _RestaurantOrdersDetailPageState extends State<RestaurantOrdersDetailPage>
       child: ElevatedButton(
         onPressed: _con.updateOrder,
         style: ElevatedButton.styleFrom(
-            primary: MyColors.primaryColor,
+            primary: Colors.blue,
             padding: EdgeInsets.symmetric(vertical: 2),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12)
@@ -254,7 +234,7 @@ class _RestaurantOrdersDetailPageState extends State<RestaurantOrdersDetailPage>
                 height: 40,
                 alignment: Alignment.center,
                 child: Text(
-                  'Despachar orden',
+                  'Iniciar entrega',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -268,120 +248,11 @@ class _RestaurantOrdersDetailPageState extends State<RestaurantOrdersDetailPage>
               child: Container(
                 margin: EdgeInsets.only(left: 50,top: 9),
                 height: 24,
-                child: Icon(Icons.check_circle, color: Colors.white,size: 24,),
+                child: Icon(Icons.directions_bike_outlined, color: Colors.white,size: 24,),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-
-  Widget _dropDown( List<User> users) {
-    return Container(
-      margin: EdgeInsets.only(top: 5, left: 30, right: 30),
-      child: Material(
-        elevation: 2.0,
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        child: Container(
-          padding: EdgeInsets.all(0),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: DropdownButton(
-                    underline: Container(
-                      alignment: Alignment.centerRight,
-                      child: Icon(
-                        Icons.arrow_drop_down_circle_rounded,
-                        color: MyColors.primaryColor,
-                      ),
-                    ),
-                    elevation: 3,
-                    isExpanded: true,
-                    hint: Text(
-                      'Selecciona repartidores',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                    items: _dropDrownItems(users),
-                    value: _con.idDelivery,
-                    onChanged:(value){
-                      setState(() {
-                        print('Repartidor seleccionado: $value');
-                         _con.idDelivery = value!;
-                        });
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  List<DropdownMenuItem<String>> _dropDrownItems(List<User> users) {
-    List<DropdownMenuItem<String>> list = [];
-    users.forEach((user) {
-      list.add(DropdownMenuItem(
-        child: Row(
-          children: [
-            Container(
-                height: 40,
-                width: 40,
-                child: user.image != null
-                    ?  FadeInImage(
-                    image: NetworkImage(user.image!),
-                    fit: BoxFit.contain,
-                    fadeInDuration: Duration(milliseconds: 50),
-                    placeholder: AssetImage('assets/img/no-image.png'))
-                    : FadeInImage(
-                  image: AssetImage('assets/img/no-image.png'),
-                  fit: BoxFit.contain,
-                  fadeInDuration: Duration(milliseconds: 50),
-                  placeholder: AssetImage('assets/img/no-image.png'),)
-            ),
-            SizedBox(width: 5),
-            Text(user.name),
-          ],
-        ),
-        value: user.id,
-
-      ));
-    });
-    return list;
-  }
-
-
-  Widget deliveryData (){
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30),
-      child: Row(
-        children: [
-          Container(
-              height: 40,
-              width: 40,
-              child: _con.order.delivery?.image != null
-                  ?  FadeInImage(
-                  image: NetworkImage(_con.order.delivery!.image!),
-                  fit: BoxFit.contain,
-                  fadeInDuration: Duration(milliseconds: 50),
-                  placeholder: AssetImage('assets/img/no-image.png'))
-                  : FadeInImage(
-                image: AssetImage('assets/img/no-image.png'),
-                fit: BoxFit.contain,
-                fadeInDuration: Duration(milliseconds: 50),
-                placeholder: AssetImage('assets/img/no-image.png'),)
-          ),
-          SizedBox(width: 5),
-          Text('${_con.order.delivery?.name ?? ''} ${_con.order.delivery?.lastname ?? ''}'),
-        ],
       ),
     );
   }

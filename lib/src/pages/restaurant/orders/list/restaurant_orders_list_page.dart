@@ -41,7 +41,6 @@ class _RestaurantOrdersListPageState extends State<RestaurantOrdersListPage> {
                children: [
                  SizedBox(height: 80),
                  _menuDrawer(),
-
                ],
              ),
              bottom: TabBar(

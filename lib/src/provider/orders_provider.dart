@@ -68,6 +68,31 @@ class OrdersProvider {
     }
   }
 
+  Future <List<Order>> getByDeliveryAndStatus(String idDelivery, String status) async  {
+    try{
+      Uri url = Uri.http(_url,'$_api/findByDeliveryAndStatus/${idDelivery}/${status}');
+      Map <String, String> headers = {
+        'Content-type':'application/json',
+        'Authorization' : sessionUser!.seccion_token
+      };
+      final res = await http.get(url, headers: headers);
+      if(res.statusCode == 401 ) {
+        Fluttertoast.showToast(msg: 'Session expirada');
+        new SharedPref().logout(context, sessionUser!.id);
+      }
+      final data = json.decode(res.body);
+      Order order  = Order.fromJsonList(data);
+      //print('tolist: ${order.toList}');
+      return order.toList;
+
+
+    }catch (e){
+      print('Error: $e');
+      return[];
+    }
+  }
+
+
   Future <ResponseApi?> updateToDispatched(Order order) async{
     print('id_delivery: ${order.idDelivery}');
     try {
@@ -93,5 +118,29 @@ class OrdersProvider {
     }
   }
 
+  Future <ResponseApi?> updateToOnTheWay(Order order) async{
+    print('id_delivery: ${order.idDelivery}');
+    try {
+      Uri url = Uri.http(_url,'$_api/updateToOnTheWay');
+      String bodyParams = json.encode(order);
+      print('BodyParams: ${bodyParams}');
+      Map <String, String> headers = {
+        'Content-type':'application/json',
+        'Authorization' : sessionUser!.seccion_token
+      };
+      final res = await http.put(url, headers: headers, body: bodyParams);
+      if(res.statusCode == 401 ) {
+        Fluttertoast.showToast(msg: 'Session expirada');
+        new SharedPref().logout(context, sessionUser!.id);
+      }
+
+      final data = json.decode(res.body);
+      ResponseApi  responseApi = ResponseApi.fromJson(data);
+      return responseApi;
+    } catch(e){
+      print('Error: $e');
+      return null;
+    }
+  }
 
 }

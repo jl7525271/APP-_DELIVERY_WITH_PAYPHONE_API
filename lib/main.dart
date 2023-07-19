@@ -6,6 +6,7 @@ import 'package:rent_finder/src/pages/client/orders/create/client_orders_create_
 import 'package:rent_finder/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:rent_finder/src/pages/client/update/client_update_page.dart';
 import 'package:rent_finder/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
+import 'package:rent_finder/src/pages/delivery/orders/map/delivery_orders_map_page.dart';
 import 'package:rent_finder/src/pages/login/login_page.dart';
 import 'package:rent_finder/src/pages/register/register_page.dart';
 import 'package:rent_finder/src/pages/restaurant/categories/create/restaurant_categories_create_page.dart';
@@ -36,17 +37,17 @@ class _MyAppState extends State<MyApp> {
         'login': (BuildContext contex) => LoginPage(),
         'register': (BuildContext contex) => RegisterPage(),
         'roles' : (BuildContext contex) => RolesPage(),
+        'client/orders/create': (BuildContext contex) => ClienteOrdersCreatePage(),
         'client/products/list': (BuildContext contex) => ClientProductsListPage(),
         'client/update': (BuildContext contex) => ClientUpdatePage(),
-        'restaurant/orders/list': (BuildContext contex) => RestaurantOrdersListPage(),
-        'delivery/orders/list': (BuildContext contex) => DeliveryOrdersListPage(),
+        'client/address/create': (BuildContext contex) => ClientAddressCreatePage(),
+        'client/address/list': (BuildContext contex) => ClientAddressListPage(),
+        'client/address/map': (BuildContext contex) => ClientAddressMapPage(),
         'restaurant/categories/create': (BuildContext contex) => RestaurantCategoriesCreatePage(),
         'restaurant/products/create': (BuildContext contex) => RestaurantProductsCreatePage(),
-        'client/orders/create': (BuildContext contex) => ClienteOrdersCreatePage(),
-        'client/address/list': (BuildContext contex) => ClientAddressListPage(),
-        'client/address/create': (BuildContext contex) => ClientAddressCreatePage(),
-        'client/address/map': (BuildContext contex) => ClientAddressMapPage()
-
+        'restaurant/orders/list': (BuildContext contex) => RestaurantOrdersListPage(),
+        'delivery/orders/list': (BuildContext contex) => DeliveryOrdersListPage(),
+        'delivery/orders/map': (BuildContext contex) => DeliveryOrdersMapPage(),
       },
       theme: ThemeData(
         primaryColor: MyColors.primaryColor,

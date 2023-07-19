@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:rent_finder/src/models/address.dart';
+import 'package:rent_finder/src/models/delivery.dart';
 import 'package:rent_finder/src/models/product.dart';
 import 'package:rent_finder/src/models/user.dart';
 
@@ -19,6 +21,12 @@ class Order {
   late int timestamp;
   List<Product> products = [];
   List<Order> toList = [];
+  Delivery? delivery = new Delivery(
+    id:'',
+    name: '',
+    lastname: '',
+    image: '',
+  );
   User? client = new User(
     email: '',
     phone: '',
@@ -30,7 +38,6 @@ class Order {
   );
 
   Order({
-
     id ='',
     idClient = '',
     idDelivery,
@@ -41,6 +48,7 @@ class Order {
     timestamp = 0,
     List<Product> products = const [],
     User? client,
+    Delivery? delivery,
     Address? address,
   }):
         id = id,
@@ -53,21 +61,23 @@ class Order {
         timestamp = timestamp,
         products = products,
         client= client,
+        delivery = delivery,
         address= address;
 
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"] is int ? json["id"].toString() : json["id"],
     idClient: json["id_client"],
-    idDelivery: json["id_delivery"],
+    idDelivery: json["id_delivery"] ==  null ? '': json["id_delivery"],
     idAddress: json["id_address"],
     status: json["status"],
     lat: json["lat"]  is String ? double.parse(json["lat"]): json["lat"],
     lng: json["lng"]  is String ? double.parse(json["lng"]): json["lng"],
     timestamp: json["timestamp"] is String ? int.parse(json["timestamp"]) : json["timestamp"],
-    products:json["products"] != null ? List<Product>.from(json["products"].map((model) => Product.fromJson(model))) ?? [] : [],
-    client: json["client"] is String ? userFromJson(json["client"]) : User.fromJson(json["client"] ?? {}),
-    address: json["address"] is String ? addressFromJson(json["address"]) : Address.fromJson(json["address"] ?? {}),
+    products:json["products"] != null ? List<Product>.from(json["products"].map((model) => model is Product ? model : Product.fromJson(model))) ?? [] : [],
+    client: json["client"] is String ? userFromJson(json["client"]) : json["client"]  is User ? json["client"] : User.fromJson(json["client"] ?? {}),
+    delivery: json["delivery"] is String ? deliveryFromJson(json["delivery"]) : json["delivery"] is Delivery ? json["delivery"] : Delivery.fromJson(json["delivery"] ?? {}),
+    address: json["address"] is String ? addressFromJson(json["address"]) : json["address"] is Address ? json["address"] : Address.fromJson(json["address"] ?? {}),
   );
 
   Order.fromJsonList(List<dynamic> jsonList) {
@@ -89,6 +99,7 @@ class Order {
     "timestamp": timestamp,
     "products" : products,
     "client": client,
+    "delivery":delivery,
     "address": address,
   };
 }
