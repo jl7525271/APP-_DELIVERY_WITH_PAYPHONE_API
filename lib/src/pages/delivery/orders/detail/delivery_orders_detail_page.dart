@@ -9,7 +9,7 @@ import 'package:rent_finder/src/widgets/no_data_widget.dart';
 
 class DeliveryOrdersDetailPage extends StatefulWidget {
 
-  Order order = new Order();
+  Order? order = new Order();
   DeliveryOrdersDetailPage({Key? key, required this.order}) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
     // TODO: implement initState
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) { 
-      _con.init(context, refresh, widget.order); // con widget se llama a la order que ya fue instanciado
+      _con.init(context, refresh, widget.order!); // con widget se llama a la order que ya fue instanciado
     });
   }
 
@@ -47,8 +47,8 @@ class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
                 indent: 30, // para la parte izquierda
               ),
               SizedBox(height: 10,),
-              _textDataClient('Cliente: ','${_con.order.client!.name ?? ''} ${_con.order.client!.lastname ?? ''}' ),
-              _textData ('Entregar en: ','${_con.order.address!.address ?? ''}'),
+              _textDataClient('Cliente: ','${_con.order.client?.name ?? ''} ${_con.order.client?.lastname ?? ''}' ),
+              _textData ('Entregar en: ','${_con.order.address?.address ?? ''}'),
               _textDataClient (
                   'Fecha de pedido: ','${RelativeTimeUtil.getRelativeTime(_con.order.timestamp ?? 0)}' ),
               SizedBox(height: 20,),
@@ -58,9 +58,9 @@ class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
           ),
         ),
       ),
-      body: _con.order!.products.length > 0
+      body: _con.order.products.length > 0
           ?  ListView(
-              children:_con.order!.products.map((Product product) {
+              children:_con.order.products.map((Product product) {
                 return _carProduct(product);
               }).toList())
           : Container(
@@ -109,7 +109,7 @@ class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Text(
-        '\$ ${product.price! * product.quantity!}',
+        '\$ ${product.price * product.quantity!}',
         style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,

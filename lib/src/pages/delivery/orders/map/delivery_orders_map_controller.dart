@@ -10,17 +10,17 @@ class DeliveryOrdersMapController {
 
   late BuildContext context;
   late Function refresh;
-  String addressName = '';
+  String? addressName = '';
   LatLng? addressLatLng;
 
-  Position? _position;
+  late Position? _position;
   CameraPosition initialPosition = CameraPosition(
       target: LatLng(-2.923478, -79.066152),
       zoom: 20, // puede ir de 1 - 20
   );
 
-  BitmapDescriptor? deliveryMarker;
-  BitmapDescriptor? homeMarker;
+  late BitmapDescriptor? deliveryMarker;
+  late BitmapDescriptor? homeMarker;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker> {};
   Completer <GoogleMapController> _mapController  = Completer();
@@ -59,7 +59,6 @@ class DeliveryOrdersMapController {
           String? street = address[0].subThoroughfare;
           String? city = address[0].locality;
           String? department = address[0].administrativeArea;
-          String? country = address[0].country;
 
           addressName = '${direction} ${street} ${city}, ${department}';
           addressLatLng = new LatLng(lat, lng);
@@ -79,7 +78,7 @@ class DeliveryOrdersMapController {
   void updateLocation() async {
     try{
       await _determinePosition(); // Obtiene la posicion actual y solicita permisos
-      _position = await Geolocator.getLastKnownPosition(); //lat y long
+      _position = (await Geolocator.getLastKnownPosition())!; //lat y long
       animatedCameraToPosition(_position!.latitude, _position!.longitude);
       addMarker(
           'Delivery',

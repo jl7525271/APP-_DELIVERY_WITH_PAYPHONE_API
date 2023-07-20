@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rent_finder/src/models/order.dart';
@@ -14,7 +12,7 @@ class DeliveryOrdersDetailController {
 
   late BuildContext context;
   late Function refresh;
-  Product? product;
+  Product product = new Product();
 
   String? idDelivery;
   double total = 0;
@@ -23,7 +21,7 @@ class DeliveryOrdersDetailController {
   SharedPref _sharedPref = new SharedPref();
   Order order = new Order();
 
-  User? user;
+  User user = new User();
   List<User>? users = [];
   UsersProvider _usersProvider = new UsersProvider();
   OrdersProvider _ordersProvider = new OrdersProvider();
@@ -66,8 +64,7 @@ class DeliveryOrdersDetailController {
         msg: responseApi!.message, toastLength: Toast.LENGTH_LONG);
     if(responseApi.success) {
       //ANTES DE ESTO NO HAY VALORES PARA LAT LNG
-      print('Order desde detail: ${order.toJson()}');
-      Navigator.pushNamed(context, 'delivery/orders/map', arguments: order!.toJson());
+      Navigator.pushNamed(context, 'delivery/orders/map', arguments: order.toJson());
     }
   }
 
