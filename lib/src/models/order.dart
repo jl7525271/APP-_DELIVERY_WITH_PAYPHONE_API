@@ -21,15 +21,9 @@ class Order {
   late int timestamp;
   List<Product> products = [];
   List<Order> toList = [];
-  Delivery? delivery = new Delivery(
-    id:'',
-    name: '',
-    lastname: '',
-    image: '',
-  );
+  Delivery? delivery = new Delivery();
   User? client = new User(
     email: '',
-    phone: '',
     password: '',
     seccion_token: '',
   );

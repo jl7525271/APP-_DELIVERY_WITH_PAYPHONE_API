@@ -19,7 +19,7 @@ import 'package:rent_finder/src/utils/shared_pref.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class DeliveryOrdersMapController {
+class ClientOrdersMapController {
 
   late BuildContext context;
   late Function refresh;
@@ -138,7 +138,7 @@ class DeliveryOrdersMapController {
   }
 
  void call(){
-   launchUrlString("tel://${order.client!.phone}");
+   launchUrlString("tel://${order.delivery!.phone}");
   }
 
   void selectRefPoint () {

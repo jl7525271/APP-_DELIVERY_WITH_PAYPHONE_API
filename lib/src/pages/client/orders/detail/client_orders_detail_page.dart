@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:rent_finder/src/models/order.dart';
 import 'package:rent_finder/src/models/product.dart';
+import 'package:rent_finder/src/pages/client/orders/detail/client_orders_detail_controller.dart';
 import 'package:rent_finder/src/pages/delivery/orders/detail/delivery_orders_detail_controller.dart';
 import 'package:rent_finder/src/utils/my_colors.dart';
 import 'package:rent_finder/src/utils/relative_time_util.dart';
 import 'package:rent_finder/src/widgets/no_data_widget.dart';
 
-class DeliveryOrdersDetailPage extends StatefulWidget {
+class ClientOrdersDetailPage extends StatefulWidget {
 
   Order? order = new Order();
-  DeliveryOrdersDetailPage({Key? key, required this.order}) : super(key: key);
+  ClientOrdersDetailPage({Key? key, required this.order}) : super(key: key);
 
   @override
-  State<DeliveryOrdersDetailPage> createState() => _DeliveryOrdersDetailPageState();
+  State<ClientOrdersDetailPage> createState() => _ClientOrdersDetailPageState();
 }
 
-class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
+class _ClientOrdersDetailPageState extends State<ClientOrdersDetailPage> {
 
-  DeliveryOrdersDetailController _con = new DeliveryOrdersDetailController();
+  ClientOrdersDetailController _con = new ClientOrdersDetailController();
   
   @override
   void initState() {
@@ -47,13 +48,13 @@ class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
                 indent: 30, // para la parte izquierda
               ),
               SizedBox(height: 10,),
-              _textDataClient('Cliente: ','${_con.order.client?.name ?? ''} ${_con.order.client?.lastname ?? ''}' ),
-              _textData ('Entregar en: ','${_con.order.address?.address ?? ''}'),
+              _textDataClient('Repartidor: ','${_con.order?.delivery?.name ?? 'No asignado'} ${_con.order.delivery?.lastname ?? ''}' ),
+              _textData ('Entregar en: ','${_con.order?.address?.address ?? ''}'),
               _textDataClient (
                   'Fecha de pedido: ','${RelativeTimeUtil.getRelativeTime(_con.order.timestamp ?? 0)}' ),
               SizedBox(height: 20,),
               _textTotalPrice(),
-              _con.order.status != "ENTREGADO"  ? _buttonNext () : Container(),
+              _con.order?.status == "EN CAMINO"  ? _buttonNext () : Container(),
             ],
           ),
         ),
@@ -220,7 +221,7 @@ class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
       child: ElevatedButton(
         onPressed: _con.updateOrder,
         style: ElevatedButton.styleFrom(
-            primary: _con.order?.status == "DESPACHADO" ? Colors.blue : Colors.green,
+            primary: Colors.blue,
             padding: EdgeInsets.symmetric(vertical: 2),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12)
@@ -234,7 +235,7 @@ class _DeliveryOrdersDetailPageState extends State<DeliveryOrdersDetailPage> {
                 height: 40,
                 alignment: Alignment.center,
                 child: Text(
-                 _con.order?.status == "DESPACHADO" ? 'Iniciar entrega' : "Ir al mapa",
+                 _con.order?.status == "EN CAMINO" ? 'Seguir entrega' : "Confirmar entrega",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

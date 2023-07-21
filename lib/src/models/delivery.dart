@@ -9,6 +9,7 @@ class Delivery {
   late String? id;
   late String? name;
   late String? lastname;
+  late String? phone;
   String? image;
   List<Delivery>? toList = [];
 
@@ -16,12 +17,14 @@ class Delivery {
     String? id,
     String? name,
     String? lastname,
+    String? phone,
     String? image,
 
   }):
         id= id,
         name=name,
         lastname=lastname,
+        phone = phone,
         image=image;
 
 
@@ -29,6 +32,7 @@ class Delivery {
     id: json["id"] is int ? json['id'].toString() : json['id'],
     name: json["name"]  ?? '',
     lastname: json["lastname"]  ?? '',
+    phone: json["phone"]  ?? '',
     image: json["image"]  ?? '',
   );
 
@@ -45,6 +49,7 @@ class Delivery {
     "id": id,
     "name": name,
     "lastname": lastname,
+    "phone": phone,
     "image": image ,
   };
 }

@@ -8,7 +8,7 @@ import 'package:rent_finder/src/provider/orders_provider.dart';
 import 'package:rent_finder/src/provider/users_provider.dart';
 import 'package:rent_finder/src/utils/shared_pref.dart';
 
-class DeliveryOrdersDetailController {
+class ClientOrdersDetailController {
 
   late BuildContext context;
   late Function refresh;
@@ -58,22 +58,10 @@ class DeliveryOrdersDetailController {
   }
 
   void updateOrder() async {
-
-    if(order.status == "DESPACHADO") {
-      ResponseApi? responseApi = await _ordersProvider.updateToOnTheWay(order);
-      Fluttertoast.showToast(
-          msg: responseApi!.message, toastLength: Toast.LENGTH_LONG);
-      if(responseApi.success) {
-        if(responseApi.success){
-          Navigator.pop(context, true);
-        }
-        Navigator.pushNamed(context,'delivery/orders/map', arguments: order.toJson());
-      }
-    }else {
-      Navigator.pushNamed(
-          context,'delivery/orders/map',arguments: order.toJson());
-    }
     refresh();
-  }
+    Navigator.pushNamed(context, 'client/orders/map', arguments: order.toJson());
+
+    }
+
 
 }

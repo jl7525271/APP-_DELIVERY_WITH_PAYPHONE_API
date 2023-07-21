@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rent_finder/src/pages/delivery/orders/map/delivery_orders_map_controller.dart';
-import 'package:rent_finder/src/utils/my_colors.dart';
+import 'package:rent_finder/src/pages/client/orders/map/client_orders_map_controller.dart';
 
-
-class DeliveryOrdersMapPage extends StatefulWidget {
-  const DeliveryOrdersMapPage({super.key});
+class ClientOrdersMapPage extends StatefulWidget {
+  const ClientOrdersMapPage({super.key});
 
   @override
-  State<DeliveryOrdersMapPage> createState() => _DeliveryOrdersMapPageState();
+  State<ClientOrdersMapPage> createState() => _ClientOrdersMapPageState();
 }
 
 
-class _DeliveryOrdersMapPageState extends State<DeliveryOrdersMapPage> {
+class _ClientOrdersMapPageState extends State<ClientOrdersMapPage> {
 
-  DeliveryOrdersMapController _con = new  DeliveryOrdersMapController();
+  ClientOrdersMapController _con = new  ClientOrdersMapController();
   @override
   void initState() {
     // TODO: implement initState
@@ -38,7 +36,7 @@ class _DeliveryOrdersMapPageState extends State<DeliveryOrdersMapPage> {
       body: Stack(
         children: [
           Container(
-              height: MediaQuery.of(context).size.height *0.60,
+              height: MediaQuery.of(context).size.height *0.67,
               child: _googleMaps()),
           SafeArea(
             child: Column(
@@ -49,88 +47,15 @@ class _DeliveryOrdersMapPageState extends State<DeliveryOrdersMapPage> {
               ],
             ),
           ),
-          Positioned(
-            top: 70,
-            left: 15,
-            child: _iconGoogleMaps(),
-          ),
-          Positioned(
-            top: 110,
-            left:15,
-            child:_iconWaze() )
         ],
       ),
     );
   }
 
-  Widget _iconGoogleMaps() {
-    return GestureDetector(
-      onTap: _con.launchGoogleMaps,
-      child: Image.asset(
-          'assets/img/google_maps.png',
-        height: 35,
-        width:35,
-      ),
-    );
-  }
-
-  Widget _iconWaze() {
-    return GestureDetector(
-      onTap: _con.launchWaze,
-      child: Image.asset(
-        'assets/img/waze.png',
-        height: 35,
-        width:35,
-      ),
-    );
-  }
-
-  Widget _buttonNext () {
-    return Container(
-      margin: EdgeInsets.only(left: 30, right: 30,  top: 5, bottom: 5),
-      child: ElevatedButton(
-        onPressed: _con.updateToDelivered,
-        style: ElevatedButton.styleFrom(
-            primary: Colors.blue,
-            padding: EdgeInsets.symmetric(vertical: 2),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)
-            )
-        ),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  'Entregar producto',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: EdgeInsets.only(left: 55,top: 7),
-                height: 24,
-                child: Icon(Icons.check_circle_outline, color: Colors.white,size: 24,),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _cardOrderInfo(){
     return Container(
-      height: MediaQuery.of(context).size.height *0.40,
+      height: MediaQuery.of(context).size.height *0.33,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -152,8 +77,7 @@ class _DeliveryOrdersMapPageState extends State<DeliveryOrdersMapPage> {
           _listTileAddress(_con.order.address?.neighborhood,'Barrio', Icons.my_location),
           _listTileAddress(_con.order.address?.address,'Direccion', Icons.location_on_outlined),
           Divider(color: Colors.grey[400], endIndent: 30, indent: 30,),
-          _clientInfo (),
-          _buttonNext (),
+          _deliveryInfo(),
         ],
       ),
     );
@@ -194,17 +118,17 @@ class _DeliveryOrdersMapPageState extends State<DeliveryOrdersMapPage> {
     );
   }
 
-  Widget _clientInfo() {
+  Widget _deliveryInfo() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      margin: EdgeInsets.only(left: 10, top: 10, right: 8),
       child: Row(
         children: [
           Container(
               height: 40,
               width: 40,
-              child: _con.order.client?.image != null
+              child: _con.order.delivery?.image != null
                   ?  FadeInImage(
-                  image: NetworkImage(_con.order.client!.image!),
+                  image: NetworkImage(_con.order.delivery!.image!),
                   fit: BoxFit.cover,
                   fadeInDuration: Duration(milliseconds: 50),
                   placeholder: AssetImage('assets/img/no-image.png'))
@@ -217,17 +141,18 @@ class _DeliveryOrdersMapPageState extends State<DeliveryOrdersMapPage> {
           Container(
             margin: EdgeInsets.only(left: 5),
             child: Text(
-              '${_con.order.client?.name ??''} ${_con.order.client?.lastname ?? ''}',
+              '${_con.order.delivery?.name ??''} ${_con.order.delivery?.lastname ??''}',
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color:  Colors.black,
                 fontSize: 17,
               ),
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
-          Spacer(),
+
           Container(
+            margin: EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(15)),
               color: Colors.grey[200],
