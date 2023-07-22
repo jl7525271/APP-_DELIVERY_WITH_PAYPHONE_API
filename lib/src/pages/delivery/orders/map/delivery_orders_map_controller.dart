@@ -18,6 +18,7 @@ import 'package:rent_finder/src/utils/my_snackbar.dart';
 import 'package:rent_finder/src/utils/shared_pref.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class DeliveryOrdersMapController {
 
@@ -47,6 +48,8 @@ class DeliveryOrdersMapController {
   User user = new User();
   SharedPref _sharedPref = new SharedPref();
 
+  late IO.Socket socket;
+
   Future <void> init (BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
@@ -55,11 +58,32 @@ class DeliveryOrdersMapController {
     deliveryMarker = await createMarkerFromAssets('assets/img/delivery2.png');
     homeMarker = await createMarkerFromAssets('assets/img/home.png');
 
+    socket = IO.io('http://${Environment.API_DEILVERY}/orders/delivery', <String, dynamic> {
+      'transports':['websocket'],
+      'autoConnect':false,
+    });
+    socket.connect();
+
     user = User.fromJson( await _sharedPref.read('user'));
     _ordersProvider.init(context, user);
    // url = Uri.parse("https://api.whatsapp.com/send?phone=593${order.client!.phone}");
     checkGPS();
     refresh();
+  }
+
+  void emitPosition(){
+    socket.emit( 'position', {
+      'id_order':order.id,
+      'lat': _position!.latitude,
+      'lng':_position!.longitude,
+    });
+  }
+
+  void saveLocation() async {
+      order.lat = _position!.latitude;
+      order.lng = _position!.longitude;
+
+      await _ordersProvider.updateLatLng(order);
   }
 
   void launchWaze() async {
@@ -91,8 +115,6 @@ class DeliveryOrdersMapController {
       await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
     }
   }
-
-
 
   void isCloseToDeliveryPosition() {
     _distanceBetween = Geolocator.distanceBetween(
@@ -180,12 +202,14 @@ class DeliveryOrdersMapController {
 
   void dispose() {
     _positionStream?.cancel();
+    socket?.disconnect();
   }
 
   void updateLocation() async {
     try{
       await _determinePosition(); // Obtiene la posicion actual y solicita permisos
       _position = (await Geolocator.getLastKnownPosition())!; //lat y long
+      saveLocation();
       animatedCameraToPosition(_position!.latitude, _position!.longitude);
       addMarker(
           'Delivery',
@@ -215,6 +239,7 @@ class DeliveryOrdersMapController {
           distanceFilter: 1,
         )).listen((Position position) {
           _position = position;
+          emitPosition();
         addMarker(
             'Delivery',
             _position!.latitude,
