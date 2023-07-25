@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rent_finder/src/models/product.dart';
 import 'package:rent_finder/src/utils/shared_pref.dart';
 

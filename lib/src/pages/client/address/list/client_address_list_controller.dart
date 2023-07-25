@@ -74,7 +74,7 @@ class ClientAddressListController {
       products: selectProducts,
     );
     ResponseApi? responseApi = await  _ordersProvider.create(order);
-
+    Navigator.pushNamed(context, 'client/payments/create');
     print('Respuesta de la creacion de la orden: ${responseApi!.message}');
   }
 

@@ -33,21 +33,23 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
       child: Scaffold(
         key: _con.key,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(170),
+          preferredSize: Size.fromHeight(165),
           child: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.white,
             actions: [
+              _menuDrawer(),
+              Spacer(),
               _shoppingBag(),
             ],
             flexibleSpace: Column(
-              children: [
-                SizedBox(height: 80),
-                _menuDrawer(),
-                SizedBox(height: 15),
-                _textFielSearch(),
+               children: [
+                 SizedBox(height: 80),
+                //SizedBox(height: 150),
+                 SizedBox(height: 30),
+                 _textFielSearch(),
               ],
-            ),
+             ),
             bottom: TabBar(
               indicatorColor: MyColors.primaryColor,
               labelColor: Colors.black,
@@ -182,18 +184,18 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
       child: Stack(
         children: [
           Container(
-            margin: EdgeInsets.only(right: 15, top: 13),
+            margin: EdgeInsets.only(right: 15, top: 13, bottom: 50),
             child: Icon(
-              Icons.shopping_bag_outlined,
-              color:  Colors.black,
+              (Icons.shopping_bag_outlined),
+                color:  Colors.black
             ),
           ),
           Positioned(
-            right: 14,
+            right: 15,
               top: 15,
               child: Container(
-                width: 9,
-                height: 9,
+                width: 12,
+                height: 12,
                 decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.all(Radius.circular(30))
@@ -207,7 +209,7 @@ class _ClientProductsListPageState extends State<ClientProductsListPage> {
   
   Widget _textFielSearch (){
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.only(right: 20, left: 20),
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Buscar',

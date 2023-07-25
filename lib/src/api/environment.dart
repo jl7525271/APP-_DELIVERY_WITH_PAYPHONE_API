@@ -1,4 +1,5 @@
 class Environment {
   static const String API_DEILVERY = "192.168.3.92:3000";
   static const String API_KEYS_MAPS = "AIzaSyDKIFQ2OgN2r-MlhvJF3VKgciT1FYDOFzY";
+  static const String TOKEN ='nTlVtAi-zjKHyc4oBWqRa0pMPE1j7-Z1oPcQdjOa2BGpXZpJ-KRWPFnBBnkaC2lDp2iVBDTuI03B_4X436xIYyRsCJpjWhRElWXOYn7bSNqzlQDHEJcH2wlyE8Xhi2YHx1mn5BKQaQ4ywEpA4Mb1kpEnDcACG35xLt_N5muldtE3IoSnGsXLeJde_G8UXWcVxr5jKZCbZjFYA5-vtkoidLSP8yY_aBYmJ2SOZnMMvkszfNPEV0nAdsjtaB9QSchQupEkv6z6P4pQ24_qPDutrSGWzaQm5hRoBUqe8KsjGvoAOTxB6DOJ4O_L1NC-hsXpDvcWtg';
 }

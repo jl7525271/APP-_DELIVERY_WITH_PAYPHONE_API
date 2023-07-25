@@ -5,6 +5,7 @@ import 'package:rent_finder/src/pages/client/address/map/client_address_map_page
 import 'package:rent_finder/src/pages/client/orders/create/client_orders_create_page.dart';
 import 'package:rent_finder/src/pages/client/orders/list/client_orders_list_page.dart';
 import 'package:rent_finder/src/pages/client/orders/map/client_orders_map_page.dart';
+import 'package:rent_finder/src/pages/client/payments/create/client_payments_create_page.dart';
 import 'package:rent_finder/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:rent_finder/src/pages/client/update/client_update_page.dart';
 import 'package:rent_finder/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
@@ -43,6 +44,7 @@ class _MyAppState extends State<MyApp> {
         'client/orders/list': (BuildContext contex) => ClientOrdersListPage(),
         'client/orders/map': (BuildContext contex) => ClientOrdersMapPage(),
         'client/products/list': (BuildContext contex) => ClientProductsListPage(),
+        'client/payments/create': (BuildContext contex) => ClientPaymentsCreatePage(),
         'client/update': (BuildContext contex) => ClientUpdatePage(),
         'client/address/create': (BuildContext contex) => ClientAddressCreatePage(),
         'client/address/list': (BuildContext contex) => ClientAddressListPage(),

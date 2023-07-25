@@ -47,6 +47,9 @@ dependencies:
   flutter_google_map_polyline_point: ^0.0.1
   url_launcher: ^6.1.12
   socket_io_client: ^2.0.2
+  flutter_credit_card: ^3.0.7
+  webview_flutter: ^4.2.2
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

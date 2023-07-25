@@ -209,7 +209,7 @@ class _ClienteOrdersCreatePageState extends State<ClienteOrdersCreatePage> {
 
   Widget _buttonNext () {
     return Container(
-      margin: EdgeInsets.only(left: 40, right: 40,  top: 40, bottom: 35),
+      margin: EdgeInsets.only(left: 40, right: 40,  top: 25, bottom: 35),
       child: ElevatedButton(
         onPressed: _con.goToAddress,
         style: ElevatedButton.styleFrom(

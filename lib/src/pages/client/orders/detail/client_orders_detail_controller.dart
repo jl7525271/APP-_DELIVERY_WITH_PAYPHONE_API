@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rent_finder/src/models/order.dart';
 import 'package:rent_finder/src/models/product.dart';
-import 'package:rent_finder/src/models/response_api.dart';
 import 'package:rent_finder/src/models/user.dart';
 import 'package:rent_finder/src/provider/orders_provider.dart';
 import 'package:rent_finder/src/provider/users_provider.dart';
