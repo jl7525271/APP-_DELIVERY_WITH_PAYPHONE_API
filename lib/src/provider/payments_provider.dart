@@ -25,23 +25,24 @@ class PaymentsProvider {
 
   //SE GENERA UN LINK DE PAGO CON LA INFORMACIÓN UTILIZANDO LA API DE PAYPHONE Y DEVOLVEMOS LA URL RESULTANTE
 
- Future <Map<String, dynamic>> generateLinkPayPhone (amount, tax, amountWithTax, clientTransactionId) async {
+Future <String> generateLinkPayPhone (amount, tax, amountWithTax, clientTransactionId) async {
     var response = await http.post(
-        Uri.parse('https://pay.payphonetodoesposible.com/api/sale'),
+        Uri.parse('https://pay.payphonetodoesposible.com/api/Links'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
         },
         body: json.encode({
-          "amount": amount,
-          "tax": tax,
-          "amountWithTax": amountWithTax,
-          "clientTransactionId": clientTransactionId,
+        "amount": 112,
+        "tax": 12,
+        "amountWithTax": 100,
+        "clientTransactionId": "idlink001",
+        "currency": "USD",
           "expireIn": 1
         }));
-    Map<String, dynamic> decodedData = json.decode(response.body);
+    String link = json.decode(response.body);
 
-    return decodedData;
+    return link;
   }
 
 

@@ -1,3 +1,6 @@
+
+import 'dart:io';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:rent_finder/src/models/order.dart';
@@ -24,9 +27,10 @@ class ClientPaymentsCreateController{
   User user  = new User();
   Order order = new Order();
   double total = 0;
-  Map<String, dynamic> link = {};
+  String link = '';
   bool loading = true;
-
+  double _webViewWidth = 0.00;
+  double _webViewHeight = 0;
 
   GlobalKey <FormState> keyForm = new GlobalKey();
 
@@ -38,34 +42,6 @@ class ClientPaymentsCreateController{
     _paymentsProvider.init(context, user);
     getTotal ();
     generateLinkPayPhone ();
-
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(NavigationDelegate(
-        onPageStarted: (String url) {},
-        onPageFinished: (String url) {},
-        onWebResourceError: (WebResourceError error) {},
-        onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith('https://www.youtube.com/')) {
-            return NavigationDecision.prevent;
-          }
-          if (request.url ==
-              "https://pay.payphonetodoesposible.com/PayPhone/Cancelled") {
-            cancelWebView();
-            print('cancelado');
-          } else if (request.url
-              .startsWith("https://pay.payphonetodoesposible.com/Direct/")) {
-            successWebView();
-            print('pagado');
-          } else if (request.url.split('/')[4] == "Expired") {
-            expiredWebView();
-            print('Expirado');
-          }
-          return NavigationDecision.navigate;
-        },
-      ))
-      ..loadRequest(Uri.parse(link['link'].toString()));
 
   }
 
@@ -87,17 +63,59 @@ class ClientPaymentsCreateController{
    String clientTransactionId =  payphonePayments.clientTransactionId = '${user.name}${user.name}001';
     payphonePayments.phoneNumber = user.phone;
 
-   Map<String, dynamic> response =   await _paymentsProvider.generateLinkPayPhone(
+  link =   await _paymentsProvider.generateLinkPayPhone(
         amount, tax, amountWithTax, clientTransactionId
     );
 
+   print('Link de payphone: ${link}');
 
-     link = response;
-     print('Link de payphone: ${link}');
-     refresh();
+   controller = WebViewController()
+     ..setJavaScriptMode(JavaScriptMode.unrestricted)
+     ..setBackgroundColor(const Color(0x00000000))
+     ..setNavigationDelegate(NavigationDelegate(
+       onPageStarted: (String url) {},
+       onPageFinished: (String url) {},
+       onWebResourceError: (WebResourceError error) {},
+       onNavigationRequest: (NavigationRequest request) {
+         if (request.url.startsWith('https://www.youtube.com/')) {
+           return NavigationDecision.prevent;
+         }
+         if (request.url ==
+             "https://pay.payphonetodoesposible.com/PayPhone/Cancelled") {
+           cancelWebView();
+           print('cancelado');
+         } else if (request.url
+             .startsWith("https://pay.payphonetodoesposible.com/Direct/")) {
+           successWebView();
+           print('pagado');
+         } else if (request.url.split('/')[4] == "Expired") {
+           expiredWebView();
+           print('Expirado');
+         }
+         return NavigationDecision.navigate;
+       },
+     ))
+     ..loadRequest(Uri.parse(link));
+
+   print('Link de payphone: $link}');
      loading = false;
-
+      refresh();
   }
+
+  void _getWebViewSize() async {
+    // Ejecutamos el código JavaScript para obtener el ancho y alto del contenido de la página web.
+    final String jsCode = '''
+      var width = document.body.scrollWidth;
+      var height = document.body.scrollHeight;
+      [width, height];
+    ''';
+    //final List<dynamic> result = await controller.(jsCode);
+
+    //if (result.length == 2) {
+      refresh();
+      //  _webViewWidth = result[0];
+    //    _webViewHeight = result[1];
+    }
 
 
   void cancelWebView (){
