@@ -1,6 +1,4 @@
 
-import 'dart:io';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:rent_finder/src/models/order.dart';
@@ -10,6 +8,8 @@ import 'package:rent_finder/src/provider/payments_provider.dart';
 import 'package:rent_finder/src/utils/my_snackbar.dart';
 import 'package:rent_finder/src/utils/shared_pref.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class ClientPaymentsCreateController{
 
@@ -29,8 +29,9 @@ class ClientPaymentsCreateController{
   double total = 0;
   String link = '';
   bool loading = true;
-  double _webViewWidth = 0.00;
-  double _webViewHeight = 0;
+  Uri? uri;
+  String? redirectedLink = '';
+
 
   GlobalKey <FormState> keyForm = new GlobalKey();
 
@@ -42,6 +43,8 @@ class ClientPaymentsCreateController{
     _paymentsProvider.init(context, user);
     getTotal ();
     generateLinkPayPhone ();
+    openLink();
+    refresh();
 
   }
 
@@ -55,7 +58,6 @@ class ClientPaymentsCreateController{
   }
 
   void generateLinkPayPhone () async  {
-
    String email =  payphonePayments.email = user.email;
    int amount =  payphonePayments.amount =  (total * 100).round().toInt();
    int tax = payphonePayments.tax = 0;
@@ -66,56 +68,55 @@ class ClientPaymentsCreateController{
   link =   await _paymentsProvider.generateLinkPayPhone(
         amount, tax, amountWithTax, clientTransactionId
     );
-
+   //https://pay.payphonetodoesposible.com/Direct/Result?id=18701342&paymentId=p6fHEmMU0CIyMWc9zRMIA
    print('Link de payphone: ${link}');
 
-   controller = WebViewController()
-     ..setJavaScriptMode(JavaScriptMode.unrestricted)
-     ..setBackgroundColor(const Color(0x00000000))
-     ..setNavigationDelegate(NavigationDelegate(
-       onPageStarted: (String url) {},
-       onPageFinished: (String url) {},
-       onWebResourceError: (WebResourceError error) {},
-       onNavigationRequest: (NavigationRequest request) {
-         if (request.url.startsWith('https://www.youtube.com/')) {
-           return NavigationDecision.prevent;
-         }
-         if (request.url ==
-             "https://pay.payphonetodoesposible.com/PayPhone/Cancelled") {
-           cancelWebView();
-           print('cancelado');
-         } else if (request.url
-             .startsWith("https://pay.payphonetodoesposible.com/Direct/")) {
-           successWebView();
-           print('pagado');
-         } else if (request.url.split('/')[4] == "Expired") {
-           expiredWebView();
-           print('Expirado');
-         }
-         return NavigationDecision.navigate;
-       },
-     ))
-     ..loadRequest(Uri.parse(link));
+   // Uri uri = Uri.parse(link);
+   // uri = uri.replace(scheme: 'intent');
+   // print ('URI: ${uri}');
+
+
+   // controller = WebViewController()
+   //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
+   //   ..setBackgroundColor(const Color(0x00000000))
+   //   ..setNavigationDelegate(NavigationDelegate(
+   //     onPageStarted: (String url) {},
+   //     onPageFinished: (String url) {},
+   //     onWebResourceError: (WebResourceError error) {},
+   //     onNavigationRequest: (NavigationRequest request) {
+   //       if (request.url.startsWith('https://www.youtube.com/')) {
+   //         return NavigationDecision.prevent;
+   //       }
+   //       if (request.url ==
+   //           "https://pay.payphonetodoesposible.com/PayPhone/Cancelled") {
+   //         cancelWebView();
+   //         print('cancelado');
+   //       } else if (request.url
+   //           .startsWith("https://pay.payphonetodoesposible.com/Direct/")) {
+   //         successWebView();
+   //         print('pagado');
+   //       } else if (request.url.split('/')[4] == "Expired") {
+   //         expiredWebView();
+   //         print('Expirado');
+   //       }
+   //       return NavigationDecision.navigate;
+   //     },
+   //   ))
+   //   ..loadRequest(uri);
 
    print('Link de payphone: $link}');
      loading = false;
       refresh();
   }
 
-  void _getWebViewSize() async {
-    // Ejecutamos el código JavaScript para obtener el ancho y alto del contenido de la página web.
-    final String jsCode = '''
-      var width = document.body.scrollWidth;
-      var height = document.body.scrollHeight;
-      [width, height];
-    ''';
-    //final List<dynamic> result = await controller.(jsCode);
+  Future<void>  openLink() async {
 
-    //if (result.length == 2) {
-      refresh();
-      //  _webViewWidth = result[0];
-    //    _webViewHeight = result[1];
+    if (await canLaunch(link)) {
+      await launch(link);
+    } else {
+      throw 'No se puede abrir el enlace: $link';
     }
+  }
 
 
   void cancelWebView (){

@@ -7,15 +7,20 @@ class NoDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 90),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('assets/img/no_items.png'),
-          Text(text)
-        ],
-      ),
+    return ListView(
+      children: [
+        SizedBox(height: 90,),
+        Container(
+          margin: EdgeInsets.only(bottom: 150),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/img/no_items.png'),
+              Text(text)
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rent_finder/src/models/category.dart';
@@ -17,6 +19,8 @@ class ClientProductsListController{
   CategoriesProvider _categoriesProvider = new CategoriesProvider();
   ProductsProvider _productsProvider = new ProductsProvider();
   GlobalKey<ScaffoldState> key = new GlobalKey <ScaffoldState>();
+  Timer? searchOnStoppedTyping;
+  String productName = '';
 
 
   Future <void> init(BuildContext context, Function refresh) async {
@@ -29,8 +33,14 @@ class ClientProductsListController{
     refresh();
   }
 
-  Future<List<Product>> getProducts(String id_category) async  {
-    return await _productsProvider.getByCategory(id_category);
+  Future<List<Product>> getProducts(String id_category, String productName) async  {
+
+    if(productName.isEmpty ){
+      return await _productsProvider.getByCategory(id_category);
+    } else {
+      return await _productsProvider.getByCategoryAndProductName(id_category,productName);
+    }
+
   }
 
  void getCategories () async {
@@ -75,6 +85,21 @@ class ClientProductsListController{
 
   void toOrdersListPage() {
     Navigator.pushNamed(context, 'client/orders/list');
+  }
+
+  void onChangeText(String text) {
+    Duration duration = Duration(milliseconds: 800);
+    if(searchOnStoppedTyping != null ) {
+      searchOnStoppedTyping!.cancel();
+      refresh();
+    }
+    searchOnStoppedTyping = new Timer(duration, () {
+      productName = text;
+      refresh();
+      print('Texto completo: ${productName}');
+    });
+
+
   }
 
 }

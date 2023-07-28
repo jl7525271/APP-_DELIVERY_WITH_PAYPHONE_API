@@ -41,9 +41,30 @@ Future <String> generateLinkPayPhone (amount, tax, amountWithTax, clientTransact
           "expireIn": 1
         }));
     String link = json.decode(response.body);
+    print('payphone: ${link}');
 
-    return link;
+
+    final responseweb = await http.get(Uri.parse(link));  //Uri.parse(link)
+    Map <String, String> headers = {
+      'Content-type':'application/json',
+      'Authorization' : sessionUser.seccion_token
+    };
+      if (responseweb.statusCode == 200) {
+        // Si la solicitud fue exitosa, obtén el link redireccionado del encabezado "location"
+        final link = responseweb.headers['location'];
+        print('redirectLink: ${link}');
+
+        if (link != null) {
+          // Si se encontró el link redireccionado, devuélvelo
+          return link;
+        } else {
+          // Si no se encontró el link redireccionado en el encabezado "location", lanza una excepción
+          throw Exception('No se encontró el link redireccionado en el encabezado "location"');
+        }
+
+      } else {
+        // Si la solicitud no fue exitosa, lanza una excepción
+        throw Exception('Error al obtener el link redireccionado. Código de estado: ${response.statusCode}');
+      }
+      }
   }
-
-
-}
