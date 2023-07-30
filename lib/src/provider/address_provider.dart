@@ -35,6 +35,7 @@ class AddressProvider {
       }
       final data = json.decode(res.body);
       Address address = Address.fromJsonList(data);
+      print('address:${address.toList}');
       return address.toList;
 
     }catch (e){

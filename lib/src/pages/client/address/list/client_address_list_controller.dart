@@ -36,8 +36,11 @@ class ClientAddressListController {
   Future <List<Address>> getAddress () async{
     print('User id: ${user!.id}');
     address = await _addressProvider.getByUser(user!.id);
-    Address a = Address.fromJson( await _sharedPref.read('address') ?? {}); // obtenie la direccion guardad en cache
-    //print('Se guardo la ubicacion: ${a.toJson()}');
+    print('addres $address');
+
+    Address a = Address.fromJson(await _sharedPref.read('address') ?? {});
+    //print('a: ${a}');// obtenie la direccion guardad en cache
+   // print('Se guardo la ubicacion: ${a.toJson()}');
     int index = address.indexWhere((ad) => ad.id == a.id );
     if(index != -1 ) {
       radioValue = index;
@@ -74,7 +77,7 @@ class ClientAddressListController {
       products: selectProducts,
     );
     ResponseApi? responseApi = await  _ordersProvider.create(order);
-    Navigator.pushNamed(context, 'client/payments');
+    Navigator.pushNamed(context, 'client/payments/create');
     print('Respuesta de la creacion de la orden: ${responseApi!.message}');
   }
 

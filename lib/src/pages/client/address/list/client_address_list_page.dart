@@ -43,7 +43,7 @@ class _ClientAddressListPageState extends State<ClientAddressListPage> {
               child:_textSelectAddress()),
           Container(
             margin: EdgeInsets.only(top: 50),
-              child: _listAddress ()),
+              child: _listAddress() ),
         ],
       ),
       bottomNavigationBar: _buttonAccept (),
@@ -51,20 +51,20 @@ class _ClientAddressListPageState extends State<ClientAddressListPage> {
   }
 
   Widget _noAddres () {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.center,
-            margin: EdgeInsets.only(top: 10),
-            child: NoDataWidget(text: 'Agrega una nueva direccion')
-        ),
-        _iconAddAddress (),
-        //_buttonNewAddress (),
-      ],
+    return  Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 10),
+              child: NoDataWidget(text: 'Agrega una nueva direccion')
+          ),
+          _iconAddAddress (),
+          //_buttonNewAddress (),
+        ],
     );
   }
 
-  Widget _listAddress () {
+  Widget _listAddress() {
     return FutureBuilder( // Listar informacion de la lista de datos. Si son varios datos
       future: _con.getAddress(), //
       builder: (context, AsyncSnapshot<List<Address>> snapshot) {
@@ -99,14 +99,14 @@ class _ClientAddressListPageState extends State<ClientAddressListPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    address.address ?? ' ',
+                    address?.address ?? ' ',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    address.neighborhood ?? ' ',
+                    address?.neighborhood ?? ' ',
                     style: TextStyle(
                       fontSize: 12,
                     ),

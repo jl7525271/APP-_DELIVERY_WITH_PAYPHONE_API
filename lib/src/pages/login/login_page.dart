@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         bottom: MediaQuery.of(context).size.width*0.20,
       ),
       child: Text(
-        "RENT FINDER",
+        "PLAZA QHATU",
             style: TextStyle(
               color: MyColors.primaryColor,
               fontWeight: FontWeight.bold,

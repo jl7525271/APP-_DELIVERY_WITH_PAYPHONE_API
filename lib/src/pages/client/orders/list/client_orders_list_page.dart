@@ -17,7 +17,6 @@ class ClientOrdersListPage extends StatefulWidget {
 class _ClientOrdersListPageState extends State<ClientOrdersListPage> {
 
   ClientOrdersListController _con = ClientOrdersListController();
-  ClientProductsListController _conProductListController =  new ClientProductsListController();
 
   @override
   void initState() {

@@ -4,12 +4,15 @@ import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:rent_finder/src/models/order.dart';
 import 'package:rent_finder/src/models/payphone_payments.dart';
 import 'package:rent_finder/src/models/user.dart';
+import 'package:rent_finder/src/pages/client/orders/create/client_orders_create_controller.dart';
 import 'package:rent_finder/src/provider/payments_provider.dart';
 import 'package:rent_finder/src/utils/my_snackbar.dart';
 import 'package:rent_finder/src/utils/shared_pref.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../models/product.dart';
 
 class ClientPaymentsCreateController{
 
@@ -31,6 +34,7 @@ class ClientPaymentsCreateController{
   bool loading = true;
   Uri? uri;
   String? redirectedLink = '';
+  List <Product>? selectProducts = [];
 
 
   GlobalKey <FormState> keyForm = new GlobalKey();
@@ -40,12 +44,11 @@ class ClientPaymentsCreateController{
     this.context= context;
     this.refresh = refresh;
     user = User.fromJson( await _sharedPref.read('user'));
+    selectProducts = Product.fromJsonList(await _sharedPref.read('order')).toList;
     _paymentsProvider.init(context, user);
     getTotal ();
-    generateLinkPayPhone ();
-    openLink();
+    generateLinkPayPhone();
     refresh();
-
   }
 
   void onCreditCardModelChange (CreditCardModel creditCardModel){
@@ -57,20 +60,19 @@ class ClientPaymentsCreateController{
     refresh();
   }
 
-  void generateLinkPayPhone () async  {
-   String email =  payphonePayments.email = user.email;
-   int amount =  payphonePayments.amount =  (total * 100).round().toInt();
-   int tax = payphonePayments.tax = 0;
-   int amountWithTax =  payphonePayments.amountWithTax = (total * 100).round().toInt();
-   String clientTransactionId =  payphonePayments.clientTransactionId = '${user.name}${user.name}001';
-    payphonePayments.phoneNumber = user.phone;
+  void generateLinkPayPhone() async  {
 
-  link =   await _paymentsProvider.generateLinkPayPhone(
-        amount, tax, amountWithTax, clientTransactionId
+   int amount = ((total * 100).round().toInt());
+   int amountWithOutTax=(total * 100).round().toInt();
+   String clientTransactionId  ='${user.name}${user.lastname}${order.id}';
+   print(clientTransactionId);
+
+      link =   await _paymentsProvider.generateLinkPayPhone(
+        amount, amountWithOutTax, clientTransactionId
     );
+
    //https://pay.payphonetodoesposible.com/Direct/Result?id=18701342&paymentId=p6fHEmMU0CIyMWc9zRMIA
    print('Link de payphone: ${link}');
-
    // Uri uri = Uri.parse(link);
    // uri = uri.replace(scheme: 'intent');
    // print ('URI: ${uri}');
@@ -107,10 +109,11 @@ class ClientPaymentsCreateController{
    print('Link de payphone: $link}');
      loading = false;
       refresh();
+
   }
 
-  Future<void>  openLink() async {
-
+  Future <void>  openLink() async {
+    print('link: $link');
     if (await canLaunch(link)) {
       await launch(link);
     } else {
@@ -131,10 +134,9 @@ class ClientPaymentsCreateController{
 
   void getTotal (){
     total = 0;
-    order.products.forEach((producto) {
-      total = total + (producto.price * producto.quantity!);
+    selectProducts!.forEach((product) {
+      total = total + (product.quantity! * product.price);
     });
     refresh();
   }
-
 }

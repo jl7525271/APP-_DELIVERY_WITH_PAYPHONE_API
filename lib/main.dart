@@ -1,5 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_finder/src/pages/client/address/create/client_address_create_page.dart';
 import 'package:rent_finder/src/pages/client/address/list/client_address_list_page.dart';
@@ -8,7 +6,6 @@ import 'package:rent_finder/src/pages/client/orders/create/client_orders_create_
 import 'package:rent_finder/src/pages/client/orders/list/client_orders_list_page.dart';
 import 'package:rent_finder/src/pages/client/orders/map/client_orders_map_page.dart';
 import 'package:rent_finder/src/pages/client/payments/create/client_payments_create_page.dart';
-import 'package:rent_finder/src/pages/client/payments/create/payments.dart';
 import 'package:rent_finder/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:rent_finder/src/pages/client/update/client_update_page.dart';
 import 'package:rent_finder/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
@@ -19,22 +16,9 @@ import 'package:rent_finder/src/pages/restaurant/categories/create/restaurant_ca
 import 'package:rent_finder/src/pages/restaurant/orders/list/restaurant_orders_list_page.dart';
 import 'package:rent_finder/src/pages/restaurant/products/create/restaurant_products_create_page.dart';
 import 'package:rent_finder/src/pages/roles/roles_page.dart';
-import 'package:rent_finder/src/provider/push_notifications_provider.dart';
 import 'package:rent_finder/src/utils/my_colors.dart';
 
-PushNotificationsProvider pushNotificationsProvider = new PushNotificationsProvider();
-
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-}
-
 void main()  async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  pushNotificationsProvider.initNotifications();
   runApp(const MyApp());
 
 }
@@ -51,7 +35,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    pushNotificationsProvider.onMessageListener();
   }
   @override
   Widget build(BuildContext context) {
@@ -68,7 +51,7 @@ class _MyAppState extends State<MyApp> {
         'client/orders/map': (BuildContext contex) => ClientOrdersMapPage(),
         'client/products/list': (BuildContext contex) => ClientProductsListPage(),
         'client/payments/create': (BuildContext contex) => ClientPaymentsCreatePage(),
-        'client/payments': (BuildContext contex) => DynamicLinkViewer(),
+        //'client/payments/create': (BuildContext contex) => DynamicLinkViewer(),
         'client/update': (BuildContext contex) => ClientUpdatePage(),
         'client/address/create': (BuildContext contex) => ClientAddressCreatePage(),
         'client/address/list': (BuildContext contex) => ClientAddressListPage(),

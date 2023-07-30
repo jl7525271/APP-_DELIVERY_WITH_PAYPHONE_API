@@ -56,32 +56,44 @@ class _ClientPaymentsCreatePageState extends State<ClientPaymentsCreatePage> {
       )
           : Scaffold(
         appBar: AppBar(
+          foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          title: Text('Your Title Here'), // Agrega un título personalizado aquí
+          title: Container(
+            margin: EdgeInsets.only(left:70 ),
+            child: Text('Payphone',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Roboto',
+               // fontStyle: FontStyle.italic,
+                letterSpacing: 1.3,
+                shadows: [ // Sombras del texto
+                  Shadow(offset: Offset(1, 2), color: Colors.grey, blurRadius: 2),
+                ],
+              )
+            ),
+          ), // Agrega un título personalizado aquí
+        ),
+        bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/img/payphone.png'), // Ruta de la imagen
+                fit: BoxFit.cover, // Ajuste de la imagen dentro del Container
+              ),
+            ),
+          height: MediaQuery.of(context).size.height * 0.09,
+          width: double.infinity,
+          child: Column(
+            children: [
+              SizedBox(height: 10,),
+              buttonLinkPay (),
+            ],
+          )
         ),
         body: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: _con.openLink,
-                child: Text('PAYPHONE'),
-              ),
-              SizedBox(height: 20),
-              if (redirectedUrl != null)
-                Text('URL redirigida: $redirectedUrl')
-              else
-                Text('Esperando redirección...'),
               Expanded(
-                child: InAppWebView(
-                  //initialUrlRequest: URLRequest(url: Uri.parse('about:blank')),
-                  onLoadStart: (controller,url) {
-                    setState(() {
-                      redirectedUrl = url.toString();
-                    });
-                  },
-                ),
+                child: _pagePayphone(),
               ),
             ],
           ),
@@ -90,9 +102,47 @@ class _ClientPaymentsCreatePageState extends State<ClientPaymentsCreatePage> {
     );
   }
 
-  // WebViewWidget (controller: _con.controller),//)
+  Widget buttonLinkPay (){
+    return Container(
+      child: ElevatedButton(
+        onPressed: _con.openLink,
+        style: ElevatedButton.styleFrom(
+          primary: Colors.orangeAccent, 
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)
+          ),
+            elevation: 5,
+        ),
+        child: Text('Generar link de pago',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
 
-  //
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _pagePayphone() {
+    // Asegúrate de especificar una altura para el InAppWebView
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.90, // Especifica aquí la altura deseada
+      child: InAppWebView(
+        initialUrlRequest: URLRequest(url: Uri.parse('https://www.payphone.app/')),
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            useOnLoadResource: true,
+            useShouldOverrideUrlLoading: true,
+          ),
+        ),
+        onLoadError: (controller, url, code, message) {
+          print("Error al cargar la página: $url, code: $code, message: $message");
+        },
+      ),
+    );
+  }
+
 
   void  refresh (){
     setState(() {});}

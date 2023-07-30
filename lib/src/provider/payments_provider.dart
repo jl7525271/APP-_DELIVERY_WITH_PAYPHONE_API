@@ -25,7 +25,8 @@ class PaymentsProvider {
 
   //SE GENERA UN LINK DE PAGO CON LA INFORMACIÓN UTILIZANDO LA API DE PAYPHONE Y DEVOLVEMOS LA URL RESULTANTE
 
-Future <String> generateLinkPayPhone (amount, tax, amountWithTax, clientTransactionId) async {
+Future <String> generateLinkPayPhone (int amount, int amountWithOutTax,String clientTransactionId) async {
+
     var response = await http.post(
         Uri.parse('https://pay.payphonetodoesposible.com/api/Links'),
         headers: {
@@ -33,38 +34,16 @@ Future <String> generateLinkPayPhone (amount, tax, amountWithTax, clientTransact
           'Authorization': 'Bearer $token'
         },
         body: json.encode({
-        "amount": 112,
-        "tax": 12,
-        "amountWithTax": 100,
-        "clientTransactionId": "idlink001",
+        "amount":amount,
+        "amountWithoutTax":amountWithOutTax,
+        "clientTransactionId":"776yy",
         "currency": "USD",
-          "expireIn": 1
+        "expireIn": 1
         }));
     String link = json.decode(response.body);
+
     print('payphone: ${link}');
+    return link;
 
-
-    final responseweb = await http.get(Uri.parse(link));  //Uri.parse(link)
-    Map <String, String> headers = {
-      'Content-type':'application/json',
-      'Authorization' : sessionUser.seccion_token
-    };
-      if (responseweb.statusCode == 200) {
-        // Si la solicitud fue exitosa, obtén el link redireccionado del encabezado "location"
-        final link = responseweb.headers['location'];
-        print('redirectLink: ${link}');
-
-        if (link != null) {
-          // Si se encontró el link redireccionado, devuélvelo
-          return link;
-        } else {
-          // Si no se encontró el link redireccionado en el encabezado "location", lanza una excepción
-          throw Exception('No se encontró el link redireccionado en el encabezado "location"');
-        }
-
-      } else {
-        // Si la solicitud no fue exitosa, lanza una excepción
-        throw Exception('Error al obtener el link redireccionado. Código de estado: ${response.statusCode}');
-      }
       }
   }
