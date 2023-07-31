@@ -15,69 +15,97 @@ Proyecto desarrollado en flutter de una aplicacion tipo delivery con roles como:
 ## Demo
 
 [![loggin.png](https://i.postimg.cc/yxnYgb55/loggin.png)](https://postimg.cc/K3kyCJmr)
-Interfaz de inicio de sesión de usuario
+- Interfaz de inicio de sesión de usuario
 
 ### Interfaz del cliente
-[![products.png](https://i.postimg.cc/YCvq08xn/products.png)](https://postimg.cc/LJMM0twL) Productos ofrecidos por los restaurantes
+[![products.png](https://i.postimg.cc/YCvq08xn/products.png)](https://postimg.cc/LJMM0twL) 
+- Productos ofrecidos por los restaurantes
 
 [![products-descriptions.png](https://i.postimg.cc/63X9HKxg/products-descriptions.png)](https://postimg.cc/mcmfD0Dy)
 
 [![order-client.png](https://i.postimg.cc/bNCwq41S/order-client.png)](https://postimg.cc/9r9hp88c)
 
+### Interfaz del restaurant
 [![restaurant-to-delivery.png](https://i.postimg.cc/kgLMb81n/restaurant-to-delivery.png)](https://postimg.cc/5XqMcHWG)
+- Asigna un pedido pagado a un delivery para ser despachado 
 
+
+### Interfaz del delivery
 [![delivery-order.png](https://i.postimg.cc/mDYrRDST/delivery-order.png)](https://postimg.cc/7GL4nqcR)
-
+- Acepta el envio e inicia la entrega 
+.
+### UTILZIACION DE LA API DE PAYPHONE PARA GENERAR EL LINK DE PAGO
 [![payphone-link.png](https://i.postimg.cc/hGxDbj6V/payphone-link.png)](https://postimg.cc/cKxGdssJ)
 
-
-[![payphonelink.png](https://i.postimg.cc/8kbC075H/payphonelink.png)](https://postimg.cc/xqcYkTLJ)
+[![payphonelink.png](https://i.postimg.cc/3RTtWS22/payphonelink.png)](https://postimg.cc/TytV4c7P)
 
 
 
 
 ## Features
 
-- Light/dark mode toggle
-- Live previews
-- Fullscreen mode
-- Cross platform
+- Iniciar sesion y registrarse 
+- Carga de productos en la pantalla del cliente
+- Pagos por medio de Payphone 
+- Actualizacion en tiempo real de ubicacion del pedido 
+- Seleccion de roles 
 
 
-## API Reference
+## API Implementations
 
-#### Get all items
+#### Get link payphone
+
 
 ```http
-  GET /api/items
+ POST /  https://pay.payphonetodoesposible.com/api/Links
+```
+
+```http
+ HEADERS token de tipo «Authorization» con contenido “Bearer TUTOKEN”.
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
+| `amout` | `int` | **Required**. |
+| `amountWithoutTax` | `int` | **Required**. es obligatorio si no se cobran valores con Iva |
+| `amountWithTax` | `int` | **Required**. es obligatorio si se cobran valores con Iva |
+| `tax` | `int` | **Required**. es obligatorio si se cobran valores con Iva |
+| `clientTransactionId` | `string` | **Required**. Your API key |
 
-#### Get item
+Documentation: 
+[payphonelink](https://docs.payphone.app/doc/linksdepago/#generar-links-de-pago-mediante-api)
 
-```http
-  GET /api/items/${id}
-```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-#### add(num1, num2)
-
-Takes two numbers and returns the sum.
 
 
 ## Deployment
 
 To deploy this project run
 
+#### Node Js
 ```bash
-  npm run deploy
+ run node server: install all dependencies / npm install
+```
+
+```bash
+ terminal: node server.js 
 ```
 
 
+#### Postgress 
 
+```bash
+ run all sql to create all tables
+```
+```bash
+ run file db.sql 
+```
+
+#### Flutter
+```bash
+ install dependencies pubspec yaml / flutter pub get
+```
+
+```bash
+ run project
+```
